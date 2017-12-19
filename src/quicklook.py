@@ -4,7 +4,6 @@ import nbformat as nbf
 import json
 import datetime
 from oct2py import io
-import numpy as np
 
 class Quicklook:
     def __init__(self,args, exp_analysis, octave):
