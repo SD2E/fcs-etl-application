@@ -1,11 +1,14 @@
 FROM ubuntu:xenial
 ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
 
-ARG TASBE_REPO=https://github.com/TASBE/TASBEFlowAnalytics.git
+ARG TASBE_REPO=https://github.com/jedsinger/TASBEFlowAnalytics.git
 ARG TASBE_BRANCH=jed_with_point_clouds
 
-ARG REACTOR_REPO=https://github.com/SD2E/reactors-etl.git
-ARG REACTOR_BRANCH=new-fcs-tasbe
+ARG REACTOR_REPO=https://github.com/SD2E/fcs-etl-reactor.git
+ARG REACTOR_BRANCH=master
+
+
+
 
 RUN apt-get update
 RUN apt-get install software-properties-common python-software-properties -y
@@ -52,19 +55,15 @@ RUN apt-get install python-numpy -y
 RUN apt-get install python-scipy -y
 
 RUN cd / && git clone -b $REACTOR_BRANCH $REACTOR_REPO && \
-    cd /reactors-etl && \
-    cp -r /reactors-etl/reactors/fcs-tasbe/src /src
-
+    cd /fcs-etl-reactor && \
+    cp -r src /
 
 RUN cd / && \
-    git clone $TASBE_REPO && \
+    git clone  -b $TASBE_BRANCH $TASBE_REPO && \
     cd /TASBEFlowAnalytics && \
-    git fetch && \
-    git pull origin $TASBE_BRANCH && \
-    git checkout $TASBE_BRANCH && \
     make install && \
     cd /TASBEFlowAnalytics/code && octave --eval 'addpath(genpath(pwd)); savepath;' &&\
     octave --eval 'pkg install -forge io'
 
 
-#CMD python /src/fcs.py --cytometer-configuration $CYT_CONFIG --process-control $PROC_CONTROL --experimental-data $EXP_DATA --color-model-parameters $COLOR_MODEL_PARAMS --analysis-parameters $ANALYSIS_PARAMS
+CMD python /src/fcs.py --cytometer-configuration $CYT_CONFIG --process-control $PROC_CONTROL --experimental-data $EXP_DATA --color-model-parameters $COLOR_MODEL_PARAMS --analysis-parameters $ANALYSIS_PARAMS
