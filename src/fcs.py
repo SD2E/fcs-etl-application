@@ -30,7 +30,7 @@ parser.add_argument('--color-model-parameters',required=True,help='Configuration
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
 parser.add_argument('--octave-method-path',help='directory for the helper octave functions')
 
-target_dir = 'output'
+target_dir = '/data/output'
 
 def main(args):
   octave = Oct2Py()
@@ -47,7 +47,7 @@ def main(args):
 
   quicklook = Quicklook(args,experiment_analysis,octave)
   quicklook.make_notebook()
-  
+
   octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(target_dir))
 
 if __name__ == '__main__':

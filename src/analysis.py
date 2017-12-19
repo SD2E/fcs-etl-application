@@ -42,8 +42,9 @@ class Analysis:
     self.octave.eval('outputsettings = OutputSettings("Exp", "", "", "{}");'.format(self.obj.get('output', {}).get('plots_folder', 'plots')))
 #     self.octave.eval('outputsettings.FixedInputAxis = [1e4 1e10];')
     self.octave.eval('plot_batch_histograms(results, sample_results, outputsettings, {}, cm);'.format(colorspecs))
-    self.print_bin_counts(self.obj['channels'])
 
+    self.print_bin_counts(self.obj['channels'])
+      
   def print_bin_counts(self,channels):
 
     a = self.octave.eval('length(channel_names)')
@@ -61,4 +62,3 @@ class Analysis:
           csv_results = ','.join([str(i[index]) for i in r.bincounts.tolist()])
           output_file.write('{},{},{},{}\n'.format(r['condition'],c,r['means'],csv_results))
           print r
-
