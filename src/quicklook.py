@@ -193,7 +193,7 @@ class Quicklook:
     def make_image_cell(self, source):
         filename = source.split('/')[-1]
         if os.path.exists(source):
-            markup = '<img src="quicklook_plots{}">'.format(filename)
+            markup = '<img src="quicklook_plots/{}">'.format(filename)
             shutil.copy2(source, self.quicklook_dir + '/quicklook_plots/{}'.format(filename))
         else:
             markup = 'Image file {} not found'.format(source)
