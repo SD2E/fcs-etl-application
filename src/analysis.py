@@ -19,7 +19,6 @@ class Analysis:
     self.octave.eval('ap = AP=setPemDropThreshold(ap,5\');');
     self.octave.eval('ap = setUseAutoFluorescence(ap,false\');')
     
-    print '*******\n' + self.obj['type']
     if self.obj.get('type', 'point_clouds') == 'bin_counts':
     		make_point_clouds = '0'
     else: make_point_clouds = '1'
