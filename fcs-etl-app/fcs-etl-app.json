@@ -1,0 +1,96 @@
+{
+  "name": "fcs-etl",
+  "version": "0.3.1",
+  "executionType": "HPC",
+  "executionSystem": "hpc-tacc-maverick-jeg",
+  "parallelism": "SERIAL",
+  "deploymentPath": "jeg/apps/fcs-etl-0.3.1",
+  "deploymentSystem": "data-sd2e-projects-users",
+  "defaultProcessorsPerNode": 1,
+  "defaultNodeCount": 1,
+  "defaultQueue": "normal",
+  "label": "FCS-ETL",
+  "modules": [ "load tacc-singularity/2.3.1" ],
+  "shortDescription": "ETL prodess for flow cytometry files",
+  "templatePath": "runner-template.sh",
+  "testPath": "tester.sh",
+
+  "inputs":[
+    {
+      "id": "cytometryConfiguration",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "processControl",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "experimentalData",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "colorModelParameters",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "analysisParameters",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "inputData",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
+    }
+  ],
+  "parameters":[],
+  "outputs": [{
+    "id": "quicklookDirectory",
+    "value": {
+      "default": "quickolook"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/data_1049"
+      ]
+    },
+    "details": {
+      "label": "Directory containing charts and graphs from TASBE analysis."
+    }
+  }, {
+    "id": "output",
+    "value": {
+      "default": "output"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/format_3752"
+      ]
+    },
+    "details": {
+      "label": "Director containing flow output."
+    }
+  }]
+}

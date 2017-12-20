@@ -28,7 +28,6 @@ parser.add_argument('--process-control',required=True,help='Configuration specif
 parser.add_argument('--experimental-data',required = True, help='Configuration specifying experimental conditions for input file')
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
-parser.add_argument('--octave-method-path',help='directory for the helper octave functions')
 
 target_dir = '/data/output'
 

@@ -44,7 +44,7 @@ class Analysis:
     self.octave.eval('plot_batch_histograms(results, sample_results, outputsettings, {}, cm);'.format(colorspecs))
 
     self.print_bin_counts(self.obj['channels'])
-      
+
   def print_bin_counts(self,channels):
 
     a = self.octave.eval('length(channel_names)')
