@@ -1,6 +1,9 @@
 
 container_exec() {
 
+
+
+
     # [TODO] Check for existence of docker or singularity executable
     # [TODO] Enable honoring a DEBUG global
     # [TODO] Figure out how to accept more optional arguments (env-file, etc)
@@ -27,6 +30,9 @@ container_exec() {
 
     # Detect container engine
     local _CONTAINER_APP=$(which singularity)
+
+    echo $_CONTAINER_APP
+
     if [ ! -z "${_CONTAINER_APP}" ]
     then
         _CONTAINER_ENGINE="singularity"
@@ -34,6 +40,7 @@ container_exec() {
         _CONTAINER_APP=$(which docker)
         if [ ! -z "${_CONTAINER_APP}" ]
         then
+            echo "setting to docker"
             _CONTAINER_ENGINE="docker"
         fi
     fi
@@ -63,8 +70,9 @@ container_exec() {
     chmod g+rwxs .
     umask 002 .
 
-    if [[ "$_CONTAINER_ENGINE" == "docker" ]];
-    then
+
+    if [[ "$_CONTAINER_ENGINE" == "docker" ]]; then
+        echo "hey, it's docker"
         #local OPTS="--network=none --cpus=1.0000 --memory=1G --device-read-iops=/dev/sda:1500 --device-read-iops=/dev/sda:1500"
 
         # Set group ownership on all files making them readable by archive process
@@ -77,6 +85,7 @@ container_exec() {
         then
             set -x
         fi
+        echo ${PARAMS}
         docker run $OPTS ${CONTAINER_IMAGE} ${COMMAND} ${PARAMS} &&
         docker run $OPTS bash chmod -R g+rw .
         if [ ! -z "$DEBUG" ];

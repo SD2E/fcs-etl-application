@@ -1,8 +1,8 @@
 # Allow over-ride
 if [ -z "${CONTAINER_IMAGE}" ]
 then
-    version=$(cat VERSION)
-    CONTAINER_IMAGE="index.docker.io/sd2e/fcs:$version"
+    version=$(cat ./_util/VERSION)
+    CONTAINER_IMAGE="sd2e/fcs:$version"
 fi
 . _util/container_exec.sh
 
@@ -87,9 +87,5 @@ fi
 
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis
-container_exec ${CONTAINER_IMAGE} python /opt/src/fc.py \
-    --cytometer-configuration "${cytometerConfiguration}" \
-    --process-control "${processControl}" \
-    --experimental-data "${experimentalData}" \
-    --color-model-parameters "${colorModelParameters}" \
-    --analysis-parameters "${analysisParameters}"
+container_exec ${CONTAINER_IMAGE} python /src/fcs.py
+#--cytometer-configuration "${cytometerConfiguration}" --process-control "${processControl}"  --experimental-data "${experimentalData}" --color-model-parameters "${colorModelParameters}" --analysis-parameters "${analysisParameters}"

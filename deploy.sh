@@ -29,8 +29,7 @@ then
         echo "Warning: ./Dockerfile not found. Image not built."
     else
         {
-            bash build.sh
-            bash push.sh
+		echo "we can add build push in here later"
         } || {
             echo "No ./build.sh script. Image not built."
         }
