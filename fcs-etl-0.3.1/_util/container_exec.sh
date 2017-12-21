@@ -1,5 +1,5 @@
 
-function container_exec() {
+container_exec() {
 
     # [TODO] Check for existence of docker or singularity executable
     # [TODO] Enable honoring a DEBUG global
@@ -94,7 +94,7 @@ function container_exec() {
 }
 
 
-function count_logical_cores() {
+count_logical_cores() {
 
     local _count_cores=4
     local _uname=$(uname)
@@ -111,7 +111,7 @@ function count_logical_cores() {
 
 }
 
-function auto_maxthreads() {
+auto_maxthreads() {
 
     local hwcore=$(count_logical_cores)
     hwcore=$((hwcore-1))

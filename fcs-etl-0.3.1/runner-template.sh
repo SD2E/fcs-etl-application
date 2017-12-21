@@ -6,11 +6,11 @@ then
 fi
 . _util/container_exec.sh
 
-function log(){
+log(){
     mesg "INFO" $@
 }
 
-function die() {
+die() {
     mesg "ERROR" $@
     # AGAVE_JOB_CALLBACK_FAILURE is macro populated at runtime
     # by the platform and gives us an eject button from
@@ -18,14 +18,14 @@ function die() {
     ${AGAVE_JOB_CALLBACK_FAILURE}
 }
 
-function mesg() {
+mesg() {
     lvl=$1
     shift
     message=$@
     echo "[$lvl] $(utc_date) - $message"
 }
 
-function utc_date() {
+utc_date() {
     echo $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 }
 
