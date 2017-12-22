@@ -29,12 +29,12 @@ parser.add_argument('--experimental-data',required = True, help='Configuration s
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
 parser.add_argument('--octave-method-path',help='directory for the helper octave functions')
-
-target_dir = '/data/output'
+parser.add_argument('--target-dir', required=True, help='directory where results are saved')
 
 def main(args):
   octave = Oct2Py()
   octave.addpath('/vagrant/TASBEFlowAnalytics/code')
+  target_dir = args.target_dir
   if not os.path.isdir(target_dir):
       os.makedirs(target_dir)
   cytometer = Cytometer(args.cytometer_configuration,octave) 
