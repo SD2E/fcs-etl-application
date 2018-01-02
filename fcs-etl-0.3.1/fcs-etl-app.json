@@ -17,7 +17,7 @@
 
   "inputs":[
     {
-      "id": "cytometryConfiguration",
+      "id": "cytometerConfiguration",
       "value": {
         "default": "",
         "visible": true,

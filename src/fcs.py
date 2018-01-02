@@ -33,7 +33,6 @@ target_dir = '/data/output'
 
 def main(args):
   octave = Oct2Py()
-  octave.addpath('/vagrant/TASBEFlowAnalytics/code')
   cytometer = Cytometer(args.cytometer_configuration,octave) 
   process = ProcessControl(args.process_control,octave)
   color_model = ColorModel(args.color_model_parameters, args.analysis_parameters, octave,process,cytometer)

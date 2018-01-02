@@ -87,5 +87,4 @@ fi
 
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis
-container_exec ${CONTAINER_IMAGE} python /src/fcs.py
-#--cytometer-configuration "${cytometerConfiguration}" --process-control "${processControl}"  --experimental-data "${experimentalData}" --color-model-parameters "${colorModelParameters}" --analysis-parameters "${analysisParameters}"
+container_exec ${CONTAINER_IMAGE} python /src/fcs.py --cytometer-configuration "${cytometerConfiguration}" --process-control "${processControl}"  --experimental-data "${experimentalData}" --color-model-parameters "${colorModelParameters}" --analysis-parameters "${analysisParameters}"
