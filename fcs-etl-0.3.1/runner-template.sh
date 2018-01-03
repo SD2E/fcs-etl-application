@@ -34,56 +34,47 @@ utc_date() {
 #
 # <inputData> can be a directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017
 # <inputData> can be a compressed directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017.[zip|tgz]
-# fc.json is inside <inputData>
-# fc.json might still have hard-coded /data/ paths
-# fc.json should be minimally validated
+# <inputData> contains assay, controls, output, plots, quicklook
+# The various JSON files assume that information needed for processing can 
+# be found under in assay & controls directories
+
+LOCAL_DATA_DIR="."
+
+# DEBUG
+echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
+echo "processControl: ${processControl}" >> inputs.txt
+echo "experimentalData: ${experimentalData}" >> inputs.txt
+echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
+echo "analysisParameters: ${analysisParameters}" >> input.txt
+echo "inputData: ${inputData}" >> input.txt
 
 OWD=$PWD
 # Predicted directory. Saem as inputData if not archive
-inputDir=$(basename ${inputData} .zip)
+inputDir=$(basename "${inputData}" .zip)
 
 # Double check existence of inputData
-if [ ! -e "${inputData}" ];
+if [ ! -d "${inputDir}" ];
 then
-    die "inputData ${inputData} not found or accesible"
-fi
-
-# is inputData a zip archive?
-# If so, unzip it, ignoring MacOSX line noise
-if [[ ${inputData} == *.zip ]]
-then
-    unzip -q -o ${inputData} -x "*.DS_Store" "*__MACOSX*" && rm -rf ${inputData} || die "Error unzipping/removing $inputData"
-fi
-
-# By now, we should have a decent chance of having a directory of Flow data
-if [ -d "${inputDir}" ]
-then
-    # Add contents of inputDir to .agave.archive
-    # Why? Because we don't need to copy the inputs
-    # back out at the end. This file is used by
-    # Agave to mark files for omission during the
-    # "archive" step
-    for A in $(find ${inputDir})
-    do
-        echo "${A#*/}" >> .agave.archive
-    done
-    # Move contents of inputDir up to run-level
-    # directory and delete the original directory
-    mv ${inputDir}/* . && rm -rf ${inputDir} || die "Couldn't move files for processing"
-fi
-
-# Remove residual hard-coded /data/ paths from fc.json
-# as they're just an artifact of early containerization
-# efforts and are completely deprecated
-if [ -f "${fcFilename}" ];
-then
-    sed -e 's/\/data\//.\//g' -i'.bak' "${fcFilename}" || die "Error correcting paths in ${fcFilename}"
+    die "inputData ${inputDir} not found or accessible"
 else
-    die "Could not find or access ${fcFilename}"
+    # Move contents of inputDir up a level and remove empty directory
+    mv ${inputDir}/* ${LOCAL_DATA_DIR} && \
+    rm -rf ${inputDir}
 fi
 
-# Do more validation on fc.json
-# Noop for now - assume it's fine
+# Add contents of some child directories to .agave.archive
+# Why? Because we don't need to copy the assay and controls
+# back out at the end. 
+# Agave uses .agave.archive to mark files that were present 
+# before the core application logic began running. It's 
+# generated automatically when the dependencies are staged
+# into place on the executionHost and we're just extending
+# that process a bit
+for FN in assay controls
+do
+    echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
+done
+
 
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis

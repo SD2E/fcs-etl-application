@@ -1,17 +1,17 @@
 {
-  "name": "fcs-etl",
+  "name": "sd2eadm-fcs-etl",
   "version": "0.3.1",
-  "executionType": "HPC",
-  "executionSystem": "hpc-tacc-maverick-jeg",
+  "executionType": "CLI",
+  "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "jeg/apps/fcs-etl-0.3.1",
+  "deploymentPath": "sd2eadm/apps/fcs-etl-0.3.1",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
   "defaultQueue": "normal",
   "label": "FCS-ETL",
-  "modules": [ "load tacc-singularity/2.3.1" ],
-  "shortDescription": "ETL prodess for flow cytometry files",
+  "modules": [],
+  "shortDescription": "ETL process for flow cytometry files",
   "templatePath": "runner-template.sh",
   "testPath": "tester.sh",
 
@@ -22,6 +22,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
       }
     },
     {
@@ -30,6 +35,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
       }
     },
     {
@@ -38,6 +48,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
       }
     },
     {
@@ -46,6 +61,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
       }
     },
     {
@@ -54,6 +74,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
       }
     },
     {
@@ -62,6 +87,11 @@
         "default": "",
         "visible": true,
         "required": true
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/data_1049"
+        ]
       }
     }
   ],
@@ -69,11 +99,12 @@
   "outputs": [{
     "id": "quicklookDirectory",
     "value": {
-      "default": "quickolook"
+      "default": "quicklook"
     },
     "semantics": {
       "ontology": [
-        "http://edamontology.org/data_1049"
+        "http://edamontology.org/data_1049",
+        "http://edamontology.org/data_2884"
       ]
     },
     "details": {
@@ -86,11 +117,12 @@
     },
     "semantics": {
       "ontology": [
-        "http://edamontology.org/format_3752"
+        "http://edamontology.org/format_3752",
+        "http://edamontology.org/data_1049"
       ]
     },
     "details": {
-      "label": "Director containing flow output."
+      "label": "Directory containing CSV flow outputs."
     }
   }]
 }
