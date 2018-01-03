@@ -1,16 +1,16 @@
 {
-  "name": "fcs-etl",
+  "name": "sd2eadm-fcs-etl",
   "version": "0.3.1",
-  "executionType": "HPC",
-  "executionSystem": "hpc-tacc-maverick-jeg",
+  "executionType": "CLI",
+  "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "jeg/apps/fcs-etl-0.3.1",
+  "deploymentPath": "sd2eadm/apps/fcs-etl-0.3.1",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
   "defaultQueue": "normal",
   "label": "FCS-ETL",
-  "modules": [ "load tacc-singularity/2.3.1" ],
+  "modules": [],
   "shortDescription": "ETL prodess for flow cytometry files",
   "templatePath": "runner-template.sh",
   "testPath": "tester.sh",
@@ -63,13 +63,21 @@
         "visible": true,
         "required": true
       }
+    },
+    {
+      "id": "dummyInput",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true
+      }
     }
   ],
   "parameters":[],
   "outputs": [{
     "id": "quicklookDirectory",
     "value": {
-      "default": "quickolook"
+      "default": "quicklook"
     },
     "semantics": {
       "ontology": [
@@ -90,7 +98,7 @@
       ]
     },
     "details": {
-      "label": "Director containing flow output."
+      "label": "Directory containing flow output."
     }
   }]
 }
