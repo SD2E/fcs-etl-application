@@ -35,6 +35,7 @@ utc_date() {
 # <inputData> can be a directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017
 # <inputData> can be a compressed directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017.[zip|tgz]
 # <inputData> contains assay, controls, output, plots, quicklook
+
 # The various JSON files assume that, no matter what the original name of <inputData>, information needed for processing can 
 # be found under the job-local ./data directory
 
@@ -47,6 +48,7 @@ echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
 echo "processControl: ${processControl}" >> inputs.txt
 echo "experimentalData: ${experimentalData}" >> inputs.txt
 echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
+
 echo "analysisParameters: ${analysisParameters}" >> input.txt
 echo "inputData: ${inputData}" >> input.txt
 echo "dummyInput: ${dummyInput}" >> input.txt
@@ -56,6 +58,7 @@ OWD=$PWD
 inputDir=$(basename "${inputData}" .zip)
 
 # Double check existence of inputData
+
 if [ ! -e "${inputData}" ];
 then
     die "inputData ${inputData} not found or accesible"
@@ -98,8 +101,19 @@ done
 #     die "Could not find or access ${fcFilename}"
 # fi
 
-# Do more validation on fc.json
-# Noop for now - assume it's fine
+# Add contents of some child directories to .agave.archive
+# Why? Because we don't need to copy the assay and controls
+# back out at the end. 
+# Agave uses .agave.archive to mark files that were present 
+# before the core application logic began running. It's 
+# generated automatically when the dependencies are staged
+# into place on the executionHost and we're just extending
+# that process a bit
+for FN in assay controls
+do
+    echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
+done
+
 
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis
