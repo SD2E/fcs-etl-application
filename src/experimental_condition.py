@@ -25,6 +25,19 @@ class ExperimentalCondition:
         for result in results["results"]["bindings"]:
             self.conditions[result["label"]["value"]] = result["num"]["value"]
 
+        sparql.setQuery("""
+                        select distinct ?plasmid where {{
+                         <{}> <http://sd2e.org#plasmid> ?plasmid.
+                        }}
+                """.format(uri))
+
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+
+        print results
+        for result in results["results"]["bindings"]:
+            self.conditions["plasmid"] = result["plasmid"]["value"]
+
     def to_string(self,keys,seperator=","):
         return seperator.join(map(lambda k: self.conditions[k], keys))
 
@@ -34,7 +47,7 @@ class ExperimentalCondition:
 
 # testing method
 if __name__ == '__main__':
-    e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql","http://hub.sd2e.org/user/nroehner/rule30_conditions/pAN1201_system_5_0_0/1")
+    e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql","http://hub.sd2e.org/user/nroehner/rule30_conditions/pAN1201_system_5_0_0/1.0.0")
     print e
 
 
