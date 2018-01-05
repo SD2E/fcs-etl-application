@@ -3,14 +3,18 @@ from pprint import pprint
 import math
 import oct2py
 from wavelength_to_rgb import wavelength_to_rgb
+from make_bayesdb_files import make_bayesdb_files
 
 class Analysis:
-  def __init__(self,analysis_filename, cytometer_filename, octave):
+  def __init__(self,analysis_filename, cytometer_filename, exp_data_filename, cm_filename, octave):
     self.octave = octave
     with open(analysis_filename) as f:
       self.obj = json.load(f)['tasbe_analysis_parameters']
     with open(cytometer_filename) as f:
       self.cytometer_config = json.load(f)['tasbe_cytometer_configuration']
+    self.exp_data_filename = exp_data_filename
+    self.cm_filename = cm_filename
+    self.analysis_filename = analysis_filename
 
   def analyze(self):
     self.octave.eval('bins = BinSequence(0,0.1,10,\'log_bins\');');
@@ -18,7 +22,10 @@ class Analysis:
     self.octave.eval('ap = setMinValidCount(ap,100\');')
     self.octave.eval('ap = AP=setPemDropThreshold(ap,5\');');
     self.octave.eval('ap = setUseAutoFluorescence(ap,false\');')
-    
+    if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      self.octave.eval('TASBEConfig.set("makePointCloudFiles", true);')
+    else:
+      self.octave.eval('TASBEConfig.set("makePointCloudFiles", false);')
      
     self.octave.eval('[results sample_results] = per_color_constitutive_analysis(cm,file_pairs,channel_names,ap);')  
     a = self.octave.eval('length(sample_results)')
@@ -37,13 +44,15 @@ class Analysis:
     if type(longnames[0]) == list: longnames = longnames[0]
     colorspecs = []
     for longname in longnames:
-    		colorspecs.append(wavelength_to_rgb([x['emission_filter']['center'] for x in self.cytometer_config['channels'] if x['name'] == longname][0]))
+        colorspecs.append(wavelength_to_rgb([x['emission_filter']['center'] for x in self.cytometer_config['channels'] if x['name'] == longname][0]))
     colorspecs = '{' + ','.join(colorspecs) + '}'
     self.octave.eval('outputsettings = OutputSettings("Exp", "", "", "{}");'.format(self.obj.get('output', {}).get('plots_folder', 'plots')))
 #     self.octave.eval('outputsettings.FixedInputAxis = [1e4 1e10];')
     self.octave.eval('plot_batch_histograms(results, sample_results, outputsettings, {}, cm);'.format(colorspecs))
 
     self.print_bin_counts(self.obj['channels'])
+    if 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      make_bayesdb_files(self.exp_data_filename, self.analysis_filename, self.cm_filename)
 
   def print_bin_counts(self,channels):
 

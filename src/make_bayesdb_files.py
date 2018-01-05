@@ -7,17 +7,17 @@ import os
 def matlab_sanitize(instr): #TASBE replaces hyphens and whitespace in certain strings with underscores
   return re.sub('[-\s]', '_', instr)
 
-def make_bayesdb_files():
+def make_bayesdb_files(exp_data, analysis_params, cm_params):
   ec_cache = {}
-  expfiles = json.load(open('/data/experimental_data.json', 'rb'))['tasbe_experimental_data']['samples']
+  expfiles = json.load(open(exp_data, 'rb'))['tasbe_experimental_data']['samples']
 
   input_cols = []
   output_cols = []
 
-  aparams = json.load(open('/data/analysis_parameters.json', 'rb'))
+  aparams = json.load(open(analysis_params, 'rb'))
   channels = aparams['tasbe_analysis_parameters']['channels']
   output_dir = aparams['tasbe_analysis_parameters']['output'].get('output_folder', '/data/output')
-  label_map = json.load(open('/data/color_model_parameters.json', 'rb'))['tasbe_color_model_parameters']['channel_parameters']
+  label_map = json.load(open(cm_params, 'rb'))['tasbe_color_model_parameters']['channel_parameters']
   label_map = {matlab_sanitize(x['name']): x['label'] for x in label_map}
 
   for c in channels:

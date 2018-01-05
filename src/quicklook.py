@@ -15,7 +15,7 @@ class Quicklook:
 
             self.look = True
             #check for quicklook option set
-            if not a['output']['quicklook']:
+            if not a['output'].get('quicklook', False):
                 self.look = False
                 return
 

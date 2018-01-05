@@ -17,7 +17,6 @@ from color_model import ColorModel
 from experiment import Experiment
 from analysis import Analysis
 from quicklook import Quicklook
-from make_bayesdb_files import make_bayesdb_files
 
 import logging
 
@@ -38,15 +37,13 @@ def main(args):
   process = ProcessControl(args.process_control,octave)
   color_model = ColorModel(args.color_model_parameters, args.analysis_parameters, octave,process,cytometer)
   experiment_data = Experiment(args.experimental_data,octave)
-  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, octave)
+  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, args.experimental_data, args.color_model_parameters, octave)
   color_model.make_gating(experiment_data)
   color_model.make_color_model()
   experiment_analysis.analyze()
 
   quicklook = Quicklook(args,experiment_analysis,octave)
   quicklook.make_notebook()
-  
-  make_bayesdb_files()
   
   octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
 
