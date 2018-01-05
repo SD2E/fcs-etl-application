@@ -17,6 +17,7 @@ from color_model import ColorModel
 from experiment import Experiment
 from analysis import Analysis
 from quicklook import Quicklook
+from make_bayesdb_files import make_bayesdb_files
 
 import logging
 
@@ -44,7 +45,9 @@ def main(args):
 
   quicklook = Quicklook(args,experiment_analysis,octave)
   quicklook.make_notebook()
-
+  
+  make_bayesdb_files()
+  
   octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
 
 if __name__ == '__main__':
