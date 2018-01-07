@@ -54,6 +54,10 @@ RUN pip install jupyter
 RUN apt-get install python-numpy -y
 RUN apt-get install python-scipy -y
 
+RUN cd / && git clone -b $REACTOR_BRANCH $REACTOR_REPO && \
+    cd /fcs-etl-reactor && \
+    cp -r src /
+
 RUN cd / && \
     git clone  -b $TASBE_BRANCH $TASBE_REPO && \
     cd /TASBEFlowAnalytics && \
@@ -61,8 +65,5 @@ RUN cd / && \
     cd /TASBEFlowAnalytics/code && octave --eval 'addpath(genpath(pwd)); savepath;' &&\
     octave --eval 'pkg install -forge io'
 
-# Local source code rather than Github
-# Put this last so we can develop locally without cache-busting
-ADD src /src
 
 CMD python /src/fcs.py --cytometer-configuration $CYT_CONFIG --process-control $PROC_CONTROL --experimental-data $EXP_DATA --color-model-parameters $COLOR_MODEL_PARAMS --analysis-parameters $ANALYSIS_PARAMS

@@ -28,6 +28,7 @@ parser.add_argument('--process-control',required=True,help='Configuration specif
 parser.add_argument('--experimental-data',required = True, help='Configuration specifying experimental conditions for input file')
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
+
 parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='/tmp/')
 
 
@@ -44,8 +45,14 @@ def main(args):
 
   quicklook = Quicklook(args,experiment_analysis,octave)
   quicklook.make_notebook()
-  
-  octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
+
+
+  try:
+    os.mkdir(args.junit_directory)
+    octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
+  except Exception as e:
+    logging.error("Error writing JUnit directory {}: {}".format(args.junit_directory, e))
+
 
 if __name__ == '__main__':
   args = parser.parse_args()

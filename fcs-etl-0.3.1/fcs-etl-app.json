@@ -1,27 +1,35 @@
 {
-  "name": "fcs-etl",
+  "name": "sd2eadm-fcs-etl",
   "version": "0.3.1",
-  "executionType": "HPC",
-  "executionSystem": "hpc-tacc-maverick-jeg",
+  "executionType": "CLI",
+  "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "jeg/apps/fcs-etl-0.3.1",
+  "deploymentPath": "sd2eadm/apps/fcs-etl-0.3.1",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
   "defaultQueue": "normal",
   "label": "FCS-ETL",
-  "modules": [ "load tacc-singularity/2.3.1" ],
+  "modules": [],
   "shortDescription": "ETL prodess for flow cytometry files",
   "templatePath": "runner-template.sh",
   "testPath": "tester.sh",
-
   "inputs":[
     {
       "id": "cytometerConfiguration",
       "value": {
         "default": "",
         "visible": true,
-        "required": true
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Cytometer Configuration (JSON)"
       }
     },
     {
@@ -29,7 +37,16 @@
       "value": {
         "default": "",
         "visible": true,
-        "required": true
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Cytometer Configuration Data (JSON)"
       }
     },
     {
@@ -37,7 +54,16 @@
       "value": {
         "default": "",
         "visible": true,
-        "required": true
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Experimental Data (JSON)"
       }
     },
     {
@@ -45,7 +71,16 @@
       "value": {
         "default": "",
         "visible": true,
-        "required": true
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Color Model Parameters (JSON)"
       }
     },
     {
@@ -53,11 +88,37 @@
       "value": {
         "default": "",
         "visible": true,
-        "required": true
+        "required": true,
+        "order": 1        
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Analysis Parameters (JSON)"
       }
     },
     {
       "id": "inputData",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 0
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/data_1049"
+        ]
+      },
+      "details": {
+        "label": "Flow Data Directory"
+      }
+    },
+    {
+      "id": "dummyInput",
       "value": {
         "default": "",
         "visible": true,
@@ -67,13 +128,29 @@
   ],
   "parameters":[],
   "outputs": [{
-    "id": "quicklookDirectory",
+    "id": "junitDirectory",
     "value": {
-      "default": "quickolook"
+      "default": "junit"
     },
     "semantics": {
       "ontology": [
-        "http://edamontology.org/data_1049"
+        "http://edamontology.org/format_2332",
+        "http://purl.obolibrary.org/obo/NCIT_C115686"
+      ]
+    },
+    "details": {
+      "label": "Directory containing JUnit reports (XML)."
+    }
+  },
+    {
+    "id": "quicklookDirectory",
+    "value": {
+      "default": "quicklook"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/data_1049",
+        "http://edamontology.org/data_2884"
       ]
     },
     "details": {
@@ -86,11 +163,12 @@
     },
     "semantics": {
       "ontology": [
-        "http://edamontology.org/format_3752"
+        "http://edamontology.org/format_3752",
+        "http://edamontology.org/data_1049"
       ]
     },
     "details": {
-      "label": "Director containing flow output."
+      "label": "Directory containing flow output."
     }
   }]
 }
