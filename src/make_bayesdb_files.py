@@ -16,7 +16,7 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
 
   aparams = json.load(open(analysis_params, 'rb'))
   channels = aparams['tasbe_analysis_parameters']['channels']
-  output_dir = aparams['tasbe_analysis_parameters']['output'].get('output_folder', '/data/output')
+  output_dir = aparams['tasbe_analysis_parameters']['output'].get('output_folder', 'output')
   label_map = json.load(open(cm_params, 'rb'))['tasbe_color_model_parameters']['channel_parameters']
   label_map = {matlab_sanitize(x['name']): x['label'] for x in label_map}
 
@@ -26,20 +26,25 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
 
   big_csv = []
 
-  for f in expfiles:
+  for file_id,f in enumerate(expfiles):
     pointfile = os.path.join(output_dir, os.path.basename(re.sub('.fcs', '_PointCloud.csv', f['file'])))
     if f['sample'] not in ec_cache:
       ec_cache[f['sample']] = ec.ExperimentalCondition("http://hub.sd2e.org:8890/sparql", f['sample']).conditions
     conditions = ec_cache[f['sample']]
-  
+
+
     for c in conditions:
       if c not in input_cols:
         input_cols.append(c)
-  
+
+    if 'file_id' not in input_cols:
+        input_cols.append('file_id')
+
     this_csv = csv.DictReader(open(pointfile, 'rb'))
     for row in this_csv:
       row = {label_map[x]: row[x] for x in row}
       row.update(conditions)
+      row.update({'file_id':file_id})
       big_csv.append(row)
     
   with open(os.path.join(output_dir, 'bayesdb_data.csv'), 'wb') as bayesdb_datafile:
