@@ -28,7 +28,8 @@ parser.add_argument('--process-control',required=True,help='Configuration specif
 parser.add_argument('--experimental-data',required = True, help='Configuration specifying experimental conditions for input file')
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
-parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default=os.path.join(os.getcwd(), 'junit'))
+
+parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='/tmp/')
 
 
 def main(args):
@@ -37,7 +38,7 @@ def main(args):
   process = ProcessControl(args.process_control,octave)
   color_model = ColorModel(args.color_model_parameters, args.analysis_parameters, octave,process,cytometer)
   experiment_data = Experiment(args.experimental_data,octave)
-  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, octave)
+  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, args.experimental_data, args.color_model_parameters, octave)
   color_model.make_gating(experiment_data)
   color_model.make_color_model()
   experiment_analysis.analyze()
@@ -45,11 +46,13 @@ def main(args):
   quicklook = Quicklook(args,experiment_analysis,octave)
   quicklook.make_notebook()
 
+
   try:
     os.mkdir(args.junit_directory)
     octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
   except Exception as e:
     logging.error("Error writing JUnit directory {}: {}".format(args.junit_directory, e))
+
 
 if __name__ == '__main__':
   args = parser.parse_args()
