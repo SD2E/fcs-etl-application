@@ -136,8 +136,9 @@ class Quicklook:
                         shutil.copy2('plots/' + trans_imname_r, self.quicklook_dir + '/quicklook_plots')
                         trans_matrix[-1].append('quicklook_plots/' + trans_imname_r)
                 chan1_ind += 1
-            self.notebook['cells'].append(nbf.v4.new_markdown_cell('# Translation models'))
-            self.notebook['cells'].append(self.make_image_matrix_cell(trans_matrix))
+            if len(trans_matrix) > 0:
+                self.notebook['cells'].append(nbf.v4.new_markdown_cell('# Translation models'))
+                self.notebook['cells'].append(self.make_image_matrix_cell(trans_matrix))
 
 
     def make_samples(self):
@@ -193,7 +194,7 @@ class Quicklook:
     def make_image_cell(self, source):
         filename = source.split('/')[-1]
         if os.path.exists(source):
-            markup = '<img src="quicklook_plots{}">'.format(filename)
+            markup = '<img src="quicklook_plots/{}">'.format(filename)
             shutil.copy2(source, self.quicklook_dir + '/quicklook_plots/{}'.format(filename))
         else:
             markup = 'Image file {} not found'.format(source)

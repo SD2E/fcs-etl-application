@@ -19,7 +19,10 @@ class Analysis:
     self.octave.eval('ap = AP=setPemDropThreshold(ap,5\');');
     self.octave.eval('ap = setUseAutoFluorescence(ap,false\');')
     
-     
+    if self.obj.get('type', 'point_clouds') == 'bin_counts':
+    		make_point_clouds = '0'
+    else: make_point_clouds = '1'
+    self.octave.eval('TASBEConfig.set(\'makePointCloudFiles\', {})'.format(make_point_clouds))
     self.octave.eval('[results sample_results] = per_color_constitutive_analysis(cm,file_pairs,channel_names,ap);')  
     a = self.octave.eval('length(sample_results)')
     
