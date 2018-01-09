@@ -41,7 +41,7 @@ utc_date() {
 
 # We may want to be able to pass this in as a parameter or detect it from the JSON files
 # For now, just hardcode it
-LOCAL_DATA_DIR=.
+LOCAL_DATA_DIR="."
 
 # DEBUG
 echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
