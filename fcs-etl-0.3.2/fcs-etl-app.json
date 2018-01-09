@@ -11,7 +11,7 @@
   "defaultQueue": "normal",
   "label": "FCS-ETL",
   "modules": [],
-  "shortDescription": "ETL prodess for flow cytometry files",
+  "shortDescription": "ETL process for flow cytometry files",
   "templatePath": "runner-template.sh",
   "testPath": "tester.sh",
   "inputs":[
@@ -115,14 +115,6 @@
       },
       "details": {
         "label": "Flow Data Directory"
-      }
-    },
-    {
-      "id": "dummyInput",
-      "value": {
-        "default": "",
-        "visible": true,
-        "required": true
       }
     }
   ],
