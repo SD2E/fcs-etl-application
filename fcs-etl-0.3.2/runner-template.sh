@@ -48,10 +48,8 @@ echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
 echo "processControl: ${processControl}" >> inputs.txt
 echo "experimentalData: ${experimentalData}" >> inputs.txt
 echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
-
 echo "analysisParameters: ${analysisParameters}" >> input.txt
 echo "inputData: ${inputData}" >> input.txt
-echo "dummyInput: ${dummyInput}" >> input.txt
 
 OWD=$PWD
 # Predicted directory. Saem as inputData if not archive
