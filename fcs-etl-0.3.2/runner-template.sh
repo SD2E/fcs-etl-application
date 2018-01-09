@@ -90,31 +90,6 @@ do
     echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
 done
 
-
-# Remove residual hard-coded /data/ paths from fc.json
-# as they're just an artifact of early containerization
-# efforts and are completely deprecated
-# if [ -f "${fcFilename}" ];
-# then
-#     sed -e 's/\/data\//.\//g' -i'.bak' "${fcFilename}" || die "Error correcting paths in ${fcFilename}"
-# else
-#     die "Could not find or access ${fcFilename}"
-# fi
-
-# Add contents of some child directories to .agave.archive
-# Why? Because we don't need to copy the assay and controls
-# back out at the end. 
-# Agave uses .agave.archive to mark files that were present 
-# before the core application logic began running. It's 
-# generated automatically when the dependencies are staged
-# into place on the executionHost and we're just extending
-# that process a bit
-for FN in assay controls
-do
-    echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
-done
-
-
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis
 container_exec ${CONTAINER_IMAGE} python /src/fcs.py --cytometer-configuration "${cytometerConfiguration}" --process-control "${processControl}"  --experimental-data "${experimentalData}" --color-model-parameters "${colorModelParameters}" --analysis-parameters "${analysisParameters}"
