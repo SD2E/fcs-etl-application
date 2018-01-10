@@ -41,40 +41,28 @@ utc_date() {
 
 # We may want to be able to pass this in as a parameter or detect it from the JSON files
 # For now, just hardcode it
-LOCAL_DATA_DIR=data
+LOCAL_DATA_DIR="."
 
 # DEBUG
 echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
 echo "processControl: ${processControl}" >> inputs.txt
 echo "experimentalData: ${experimentalData}" >> inputs.txt
 echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
-
 echo "analysisParameters: ${analysisParameters}" >> input.txt
 echo "inputData: ${inputData}" >> input.txt
-echo "dummyInput: ${dummyInput}" >> input.txt
 
 OWD=$PWD
 # Predicted directory. Saem as inputData if not archive
 inputDir=$(basename "${inputData}" .zip)
 
 # Double check existence of inputData
-
-if [ ! -e "${inputData}" ];
+if [ ! -d "${inputDir}" ];
 then
-    die "inputData ${inputData} not found or accesible"
-fi
-
-# is inputData a zip archive?
-# If so, unzip it, ignoring MacOSX line noise
-if [[ "${inputData}" == *.zip ]]
-then
-    unzip -q -o ${inputData} -x "*.DS_Store" "*__MACOSX*" -d "${LOCAL_DATA_DIR}" && rm -rf ${inputData} || die "Error unzipping/removing $inputData"
+    die "inputData ${inputDir} not found or accessible"
 else
-    # Rename inputDir to data or whatever we want to call it
-    if [ -d "${inputDir}" ]
-    then
-        mv -f "${inputDir}" "${LOCAL_DATA_DIR}"
-    fi
+    # Move contents of inputDir up a level and remove empty directory
+    mv ${inputDir}/* ${LOCAL_DATA_DIR} && \
+    rm -rf ${inputDir}
 fi
 
 # Add contents of some child directories to .agave.archive
