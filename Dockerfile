@@ -52,6 +52,7 @@ RUN pip install --upgrade pip
 RUN pip install oct2py 
 RUN pip install --upgrade --force-reinstall octave_kernel
 RUN pip install jupyter
+RUN pip install SPARQLWrapper
 RUN apt-get install python-numpy -y
 RUN apt-get install python-scipy -y
 
