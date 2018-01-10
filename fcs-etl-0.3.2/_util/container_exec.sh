@@ -86,6 +86,7 @@ container_exec() {
             set -x
         fi
         echo ${PARAMS}
+        docker pull ${CONTAINER_IMAGE}
         docker run $OPTS ${CONTAINER_IMAGE} ${COMMAND} ${PARAMS} &&
         docker run $OPTS bash chmod -R g+rw .
         if [ ! -z "$DEBUG" ];
