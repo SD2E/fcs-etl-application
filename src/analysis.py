@@ -4,6 +4,7 @@ import math
 import oct2py
 from wavelength_to_rgb import wavelength_to_rgb
 from make_bayesdb_files import make_bayesdb_files
+import os
 
 class Analysis:
   def __init__(self,analysis_filename, cytometer_filename, exp_data_filename, cm_filename, octave):
@@ -15,6 +16,9 @@ class Analysis:
     self.exp_data_filename = exp_data_filename
     self.cm_filename = cm_filename
     self.analysis_filename = analysis_filename
+
+    if not os.path.exists(self.obj['output']['file']):
+      os.makedirs(self.obj['output']['file'])
 
   def analyze(self):
     self.octave.eval('bins = BinSequence(0,0.1,10,\'log_bins\');');
@@ -61,6 +65,8 @@ class Analysis:
     
     for i in xrange(1,int(a)+1):
       color_order[self.octave.eval('channel_names{{1,{}}}'.format(i))] = i-1
+
+
 
     with open(self.obj['output']['file'],'w') as output_file: 
       print self.results[0]
