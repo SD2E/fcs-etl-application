@@ -20,6 +20,8 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
   label_map = json.load(open(cm_params, 'rb'))['tasbe_color_model_parameters']['channel_parameters']
   label_map = {matlab_sanitize(x['name']): x['label'] for x in label_map}
 
+  print label_map
+
   for c in channels:
     if c not in output_cols:
       output_cols.append(c)
@@ -46,7 +48,7 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
       row.update(conditions)
       row.update({'file_id':file_id})
       big_csv.append(row)
-    
+
   with open(os.path.join(output_dir, 'bayesdb_data.csv'), 'wb') as bayesdb_datafile:
     writer = csv.DictWriter(bayesdb_datafile, fieldnames=input_cols + output_cols)
     writer.writeheader()

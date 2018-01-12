@@ -29,7 +29,7 @@ parser.add_argument('--experimental-data',required = True, help='Configuration s
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
 
-parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='/tmp/fcs.xml')
+parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='/tmp/')
 
 
 def main(args):
