@@ -1,10 +1,10 @@
 {
-  "name": "sd2eadm-fcs-etl",
-  "version": "0.3.2",
+  "name": "jeg-fcs-etl",
+  "version": "0.3.3",
   "executionType": "CLI",
   "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "sd2eadm/apps/fcs-etl-0.3.2",
+  "deploymentPath": "jeg/apps/fcs-etl-0.3.3",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
