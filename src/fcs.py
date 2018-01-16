@@ -31,8 +31,33 @@ parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
 
 parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='/tmp/')
 
-
 def main(args):
+  '''
+  Runs the whole sequence of FCS processing/analysis, using TASBE (a Matlab program) in
+  an Oct2Py instance. The arguments above indicate the five configuration .json files 
+  needed, plus the output directory for the XML file which will indicate warnings and
+  errors during processing.
+
+  Inputs:
+
+    analysis-parameters:      A .json file (e.g. analysis_parameters.json) specifying some
+                              information about the analyses to be performed, the parameters
+                              of these analyses, input/output locations of files, etc.
+                          
+    cytometer-configuration:  A .json file (e.g. cytometer_configuration.json) describing
+                              the state of the cytometer used to collect the data.
+
+    experimental-data:        A .json file (e.g. experimental_data.json) describing the URI
+                              and file locations for the raw data files to be included.
+                          
+    color-model-parameters:   A .json file (e.g. color_model_parameters.json) describing the
+                              species being analyzed, channels, bead peak config, etc.
+
+    junit-directory:          Where the status XML gets written
+  
+  The steps below must be run in order; much of the work depends on the state of the 
+  octave object, which changes with each step.
+  '''
   octave = Oct2Py()
   cytometer = Cytometer(args.cytometer_configuration,octave) 
   process = ProcessControl(args.process_control,octave)
