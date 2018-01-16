@@ -73,7 +73,7 @@ fi
 # generated automatically when the dependencies are staged
 # into place on the executionHost and we're just extending
 # that process a bit
-for FN in assay controls
+for FN in assay controls instrument_output manifest
 do
     echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
 done
