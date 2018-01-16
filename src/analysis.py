@@ -84,7 +84,8 @@ class Analysis:
           print 'getting ',r['condition']
 
           e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql",r['condition'])
-          p = plasmid
+
+          e = e.conditions
           for key in e:
 
             if key != 'plasmid':
@@ -97,7 +98,4 @@ class Analysis:
           print rep
           print e
 
-          output_file.write('{},{},{},{},{}\n'.format(e,c,r['means'],csv_results))
-
-
-    exit()
+          output_file.write('{},{},{},{}\n'.format(e,c,r['means'],csv_results))
