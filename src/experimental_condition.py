@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 import json
+from config import settings
 
 class ExperimentalCondition:
     def __init__(self,host,uri):
@@ -48,7 +49,6 @@ class ExperimentalCondition:
 
 # testing method
 if __name__ == '__main__':
-    e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql","http://hub.sd2e.org/user/nroehner/rule30_conditions/pAN3928_pAN4036_system_5_0_0/1.0.0")
-    print e
-
+    #e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql","http://hub.sd2e.org/user/nroehner/rule30_conditions/pAN3928_pAN4036_system_5_0_0/1.0.0")
+    e = ExperimentalCondition(settings.sparql.host, settings.sparql.uri)
 
