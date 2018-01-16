@@ -1,10 +1,10 @@
 {
-  "name": "fcs-etl",
-  "version": "0.3.1",
+  "name": "jeg-fcs-etl",
+  "version": "0.3.2",
   "executionType": "CLI",
   "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "jeg/apps/fcs-etl-0.3.1",
+  "deploymentPath": "jeg/apps/fcs-etl-0.3.2",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
@@ -160,7 +160,7 @@
       ]
     },
     "details": {
-      "label": "Directory containing flow outputs (CSV)."
+      "label": "Directory containing flow output."
     }
   }]
 }

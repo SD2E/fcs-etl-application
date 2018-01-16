@@ -63,7 +63,8 @@ class ColorModel:
     self.octave.eval('cm = set_bead_batch(cm,\'{}\');'.format(bead_info['batch']))
     self.octave.eval('cm = set_ERF_channel_name(cm,\'{}\');'.format(self.obj['ERF_channel_name']))
     #self.octave.eval('settings = setSetting(settings,\'channel_template_file\',\'{}\');'.format(blank))
-    #self.octave.eval('settings = setSetting(settings,\'override_units\',1)')
+    if not bead_info['file']:
+			self.octave.eval('settings = setSetting(settings,\'override_units\',1)')
     #self.octave.eval('settings = setSetting(settings,\'override_autofluorescence\', 0)')
 
     self.octave.eval('settings = setSetting(settings, \'channel_template_file\', \'{}\')'.format(self.template_file))

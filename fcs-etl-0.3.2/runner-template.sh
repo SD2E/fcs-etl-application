@@ -35,9 +35,12 @@ utc_date() {
 # <inputData> can be a directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017
 # <inputData> can be a compressed directory - agave://data-sd2e-community/sample/fcs-tasbe/Q0-ProtStab-BioFab-Flow_29092017.[zip|tgz]
 # <inputData> contains assay, controls, output, plots, quicklook
-# The various JSON files assume that information needed for processing can 
-# be found under in assay & controls directories
 
+# The various JSON files assume that, no matter what the original name of <inputData>, information needed for processing can 
+# be found under the job-local ./data directory
+
+# We may want to be able to pass this in as a parameter or detect it from the JSON files
+# For now, just hardcode it
 LOCAL_DATA_DIR="."
 
 # DEBUG
@@ -45,8 +48,8 @@ echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
 echo "processControl: ${processControl}" >> inputs.txt
 echo "experimentalData: ${experimentalData}" >> inputs.txt
 echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
-echo "analysisParameters: ${analysisParameters}" >> inputs.txt
-echo "inputData: ${inputData}" >> inputs.txt
+echo "analysisParameters: ${analysisParameters}" >> input.txt
+echo "inputData: ${inputData}" >> input.txt
 
 OWD=$PWD
 # Predicted directory. Saem as inputData if not archive
@@ -74,7 +77,6 @@ for FN in assay controls
 do
     echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
 done
-
 
 # We have not failed yet. Systems are probably nominal.
 # Kick off the analysis
