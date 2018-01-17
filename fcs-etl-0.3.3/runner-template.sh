@@ -78,7 +78,14 @@ fi
 for FN in assay controls instrument_output manifest
 do
     echo "${FN}" >> .agave.archive
-    echo "*.json" >> .agave.archive
+    echo "octave-workspace" >> .agave.archive
+done
+
+# These files already exist in another place
+# so we should not duplicate them in the output archive. 
+for J in analysis_parameters color_model_parameters cytometer_configuration experimental_data process_control_data
+do
+    echo "${J}.json" >> .agave.archive
 done
 
 # We have not failed yet. Systems are probably nominal.
