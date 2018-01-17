@@ -43,26 +43,28 @@ utc_date() {
 # For now, just hardcode it
 LOCAL_DATA_DIR="."
 
-# DEBUG
-echo "cytometerConfiguration: ${cytometerConfiguration}" >> inputs.txt
-echo "processControl: ${processControl}" >> inputs.txt
-echo "experimentalData: ${experimentalData}" >> inputs.txt
-echo "colorModelParameters: ${colorModelParameters}" >> inputs.txt
-echo "analysisParameters: ${analysisParameters}" >> input.txt
-echo "inputData: ${inputData}" >> input.txt
-
 OWD=$PWD
 # Predicted directory. Saem as inputData if not archive
 inputDir=$(basename "${inputData}" .zip)
 
-# Double check existence of inputData
+# if inputData is already instrument_output, do nothing
+if [ "${inputDir}" != "instrument_output" ]
+then
+    if [ ! -d "instrument_output" ]
+    then
+        mv "${inputDir}" "instrument_output"
+        echo "Renamed ${inputDir} to instrument_output"
+        inputDir="instrument_output"
+    else
+        echo "${inputDir} != instrument_output but instrument_output already exists"
+    fi
+fi
+
+# Double check existence of inputDir before undertaking
+# expensive processing and/or analysis. Fail if not found. 
 if [ ! -d "${inputDir}" ];
 then
-    die "inputData ${inputDir} not found or accessible"
-else
-    # Move contents of inputDir up a level and remove empty directory
-    mv ${inputDir}/* ${LOCAL_DATA_DIR} && \
-    rm -rf ${inputDir}
+    die "inputData ${inputDir} not found or was inaccessible"
 fi
 
 # Add contents of some child directories to .agave.archive
@@ -75,7 +77,8 @@ fi
 # that process a bit
 for FN in assay controls instrument_output manifest
 do
-    echo "${LOCAL_DATA_DIR}/${FN}" >> .agave.archive
+    echo "${FN}" >> .agave.archive
+    echo "*.json" >> .agave.archive
 done
 
 # We have not failed yet. Systems are probably nominal.
