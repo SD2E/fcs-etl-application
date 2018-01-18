@@ -8,7 +8,7 @@ class ExperimentalCondition:
         self.uri = uri
 
         try:
-            raise urllib2.URLError('Testing')
+            #raise urllib2.URLError('Testing')
             sparql = SPARQLWrapper(host)
 
             sparql.setQuery("""
@@ -55,7 +55,6 @@ class ExperimentalCondition:
 
 # testing method
 if __name__ == '__main__':
-    e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql","http://hub.sd2e.org/user/nroehner/rule30_conditions/pAN3928_pAN4036_system_5_0_0/1.0.0")
+    e = ExperimentalCondition("http://hub-api.sd2e.org/sparql","http://hub.sd2e.org/user/nicholasroehner/rule_30/pAN1717_system_5_0p002_1/1")
     print e
-
 

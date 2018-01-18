@@ -83,19 +83,19 @@ class Analysis:
           csv_results = ','.join([str(i[index]) for i in r.bincounts.tolist()])
           print 'getting ',r['condition']
 
-          e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql",r['condition'])
+          e = ExperimentalCondition("http://hub-api.sd2e.org/sparql",r['condition'])
 
           e = e.conditions
+          condition_object = {}
           for key in e:
-
-            if key != 'plasmid':
-              e[key] = 1 if e[key] > 0 else 0
+            if key != 'plasmids':
+              condition_object[key.replace('_measure','')] = 1 if float(e[key]) != 0.0 else 0
             else:
-              e[key].split('#')[-1]
+              condition_object['plasmid'] = '_'.join( map(lambda s: s.split("#")[1],e[key]))
 
           rep = replicater.get_replicate(str(e))
-          e['replicate'] = rep
+          condition_object['replicate'] = rep
           print rep
           print e
 
-          output_file.write('{},{},{},{}\n'.format(e,c,r['means'],csv_results))
+          output_file.write('{},{},{},{}\n'.format(condition_object,c,r['means'],csv_results))
