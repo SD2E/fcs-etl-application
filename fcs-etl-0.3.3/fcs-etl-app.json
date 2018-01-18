@@ -1,0 +1,166 @@
+{
+  "name": "jeg-fcs-etl",
+  "version": "0.3.3",
+  "executionType": "CLI",
+  "executionSystem": "hpc-tacc-jetstream",
+  "parallelism": "SERIAL",
+  "deploymentPath": "jeg/apps/fcs-etl-0.3.3",
+  "deploymentSystem": "data-sd2e-projects-users",
+  "defaultProcessorsPerNode": 1,
+  "defaultNodeCount": 1,
+  "defaultQueue": "normal",
+  "label": "FCS-ETL",
+  "modules": [],
+  "shortDescription": "ETL process for flow cytometry files",
+  "templatePath": "runner-template.sh",
+  "testPath": "tester.sh",
+  "inputs":[
+    {
+      "id": "cytometerConfiguration",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Cytometer Configuration (JSON)"
+      }
+    },
+    {
+      "id": "processControl",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Cytometer Configuration Data (JSON)"
+      }
+    },
+    {
+      "id": "experimentalData",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Experimental Data (JSON)"
+      }
+    },
+    {
+      "id": "colorModelParameters",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 1       
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Color Model Parameters (JSON)"
+      }
+    },
+    {
+      "id": "analysisParameters",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 1        
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/format_3464"
+        ]
+      },
+      "details": {
+        "label": "Analysis Parameters (JSON)"
+      }
+    },
+    {
+      "id": "inputData",
+      "value": {
+        "default": "",
+        "visible": true,
+        "required": true,
+        "order": 0
+      },
+      "semantics": {
+        "ontology": [
+          "http://edamontology.org/data_1049"
+        ]
+      },
+      "details": {
+        "label": "Flow Data Directory"
+      }
+    }
+  ],
+  "parameters":[],
+  "outputs": [{
+    "id": "junitDirectory",
+    "value": {
+      "default": "junit"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/format_2332",
+        "http://purl.obolibrary.org/obo/NCIT_C115686"
+      ]
+    },
+    "details": {
+      "label": "Directory containing JUnit reports (XML)."
+    }
+  },
+    {
+    "id": "quicklookDirectory",
+    "value": {
+      "default": "quicklook"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/data_1049",
+        "http://edamontology.org/data_2884"
+      ]
+    },
+    "details": {
+      "label": "Directory containing charts and graphs from TASBE analysis."
+    }
+  }, {
+    "id": "output",
+    "value": {
+      "default": "output"
+    },
+    "semantics": {
+      "ontology": [
+        "http://edamontology.org/format_3752",
+        "http://edamontology.org/data_1049"
+      ]
+    },
+    "details": {
+      "label": "Directory containing flow output."
+    }
+  }]
+}

@@ -1,5 +1,6 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
 import json
+from config import settings
 import urllib2
 
 class ExperimentalCondition:
