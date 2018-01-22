@@ -36,8 +36,7 @@ class ColorModel:
       print blank
       print "++++ \n\n"
 
-      k_components = self.obj['tasbe_config']['gating']['k_components']
-      k_components = 2
+      k_components = self.obj['tasbe_config']['gating'].get('k_components', 2)
       self.octave.eval('agp = AutogateParameters(); agp.k_components={}; agp.density=0;'.format(k_components))
       self.octave.eval('gating = GMMGating(\'{}\',agp,\'{}\');'.format(blank, self.analysis_params.get('output', {}).get('plots_folder', 'plots')))
 #       self.gating = self.octave.pull('gating')
