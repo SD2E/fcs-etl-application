@@ -31,7 +31,7 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
   for file_id,f in enumerate(expfiles):
     pointfile = os.path.join(output_dir, os.path.basename(re.sub('.fcs', '_PointCloud.csv', f['file'])))
     if f['sample'] not in ec_cache:
-      ec_cache[f['sample']] = ec.ExperimentalCondition("http://hub.sd2e.org:8890/sparql", f['sample']).conditions
+      ec_cache[f['sample']] = ec.ExperimentalCondition("http://hub-api.sd2e.org/sparql", f['sample']).conditions
     conditions = ec_cache[f['sample']]
 
 

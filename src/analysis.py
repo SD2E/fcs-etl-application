@@ -76,17 +76,26 @@ class Analysis:
 
     with open(self.obj['output']['file'],'w') as output_file: 
 
-      output_file.write('condition,replicate,channel,geo_mean,{}\n'.format(','.join([str(math.log(i,10)) for i in self.results[0].bincenters.tolist()[0]])))
+      output_file.write('condition,channel,geo_mean,{}\n'.format(','.join([str(math.log(i,10)) for i in self.results[0].bincenters.tolist()[0]])))
       for c in channels:
         index = color_order[c]
         for r in self.results:
           csv_results = ','.join([str(i[index]) for i in r.bincounts.tolist()])
-          e = ExperimentalCondition("http://hub.sd2e.org:8890/sparql",r['condition'])
+          print 'getting ',r['condition']
+
+          e = ExperimentalCondition("http://hub-api.sd2e.org/sparql",r['condition'])
+
+          e = e.conditions
+          condition_object = {}
+          for key in e:
+            if key != 'plasmids':
+              condition_object[key.replace('_measure','')] = 1 if float(e[key]) != 0.0 else 0
+            else:
+              condition_object['plasmid'] = '_'.join( map(lambda s: s.split("#")[1],e[key]))
+
           rep = replicater.get_replicate(str(e))
+          condition_object['replicate'] = rep
           print rep
-
-          output_file.write('{},{},{},{},{}\n'.format(e,rep,c,r['means'],csv_results))
-
           print e
 
-    exit()
+          output_file.write('{},{},{},{}\n'.format(condition_object,c,r['means'],csv_results))
