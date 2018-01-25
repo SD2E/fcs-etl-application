@@ -4,6 +4,7 @@ import nbformat as nbf
 import json
 import datetime
 from oct2py import io
+import experimental_condition
 
 class Quicklook:
     def __init__(self,args, exp_analysis, octave):
@@ -58,11 +59,13 @@ class Quicklook:
 
 
     def make_header(self):
+
         if 'rdf:about' in self.expdata:
             markdown = '## Data collection: {}'.format(self.expdata['rdf:about'])
         else:
             markdown = '## Data collection not specified in {}'.format(self.args.experimental_data)
-        markdown += '\n\n# Analyzed at {} UTC'.format(datetime.datetime.utcnow())
+
+        markdown = '\n\n# Analyzed at {} UTC'.format(datetime.datetime.utcnow())
         self.notebook['cells'].append(nbf.v4.new_markdown_cell(markdown))
 
     def make_gating(self):
@@ -162,8 +165,19 @@ class Quicklook:
             self.notebook['cells'].append(self.make_well_summary_cell(sample['condition'], means, stds, channel_names))
 
     def make_well_summary_cell(self, condition, means, stds, channels):
-        markdown = '#### Condition: ' + condition
-        markdown += '\n\n| Statistic ' + ''.join(['| {} '.format(c) for c in channels]) + '|'
+        e = experimental_condition.ExperimentalCondition("https://hub-api.sd2e.org/sparql",condition)
+        condition_strings = []
+        for c in e.conditions:
+            condition_strings.append('{}:{}'.format(c,e.conditions[c]).replace('http://sd2e.org#',''))
+
+
+        markdown = '#### Condition: ' +' '.join(condition_strings)
+
+        if channels is list:
+            markdown += '\n\n| Statistic ' + ''.join(['| {} '.format(c) for c in channels]) + '|'
+        else:
+            markdown += '\n\n| Statistic |' +channels + '|'
+
         markdown += '\n|---' + ''.join(['|---' for c in channels]) + '|'
         markdown += '\n| Geo. Mean ' + ''.join(['| {0:.2f} '.format(float(m)) for m in means]) + '|'
         markdown += '\n| Geo. STD ' + ''.join(['| {0:.2f} '.format(float(s)) for s in stds]) + '|'

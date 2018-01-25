@@ -83,7 +83,7 @@ class Analysis:
           csv_results = ','.join([str(i[index]) for i in r.bincounts.tolist()])
           print 'getting ',r['condition']
 
-          e = ExperimentalCondition("http://hub-api.sd2e.org/sparql",r['condition'])
+          e = ExperimentalCondition("https://hub-api.sd2e.org/sparql",r['condition'])
 
           e = e.conditions
           condition_object = {}
