@@ -70,23 +70,26 @@ This section will touch on the elements within the paramter files that may be co
 			"plots": true,
 			"_comment8": "set the location for plots",
 			"plots_folder": "plots",
-			"_comment10": "set plots for additional face validity information",
+			"_comment11": "folder for output",
 			"output_folder": "output",
+			"_comment12": "file for histogram output",
 			"file": "output/output.csv",
+			"_comment13": "option and location for the quicklook export.",
 			"quicklook": true,
 			"quicklook_folder": "quicklook"
 		},
-                "channels": ["mKate", "EYFP","EBFP2"],
-		"_comment7": "additional parameters controlling data processing and output; type can be bin_counts or point_clouds",
+        "_comment14": "Channels to write.",
+        "channels": ["mKate", "EYFP","EBFP2"],
+		"_comment15": "additional parameters controlling data processing and output; type can be bin_counts or point_clouds",
 		"min_valid_count": 100,
 		"pem_drop_threshold": 5,
 
-        "_comment8": "Supported output modalities. histogram reports bin centers and counts. point_cloud reports each particle for an fcs file in seperate files. bayesdb_files
+        "_comment16": "Supported output modalities. histogram reports bin centers and counts. point_cloud reports each particle for an fcs file in seperate files. bayesdb_files
          produces a dataframe for the bayesdb that outlines the metadata and particle files.",
         "additional_outputs": ["histogram", "point_clouds", "bayesdb_files"],
 
 
-        "_comment9": "If the histogram output is selected, this ",
+        "_comment17": "If the histogram output is selected, this ",
         "bin_min": 6,
 		"bin_max": 10,
 		"bin_width": 0.1
