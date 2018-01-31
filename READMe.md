@@ -80,9 +80,10 @@ This section will touch on the elements within the paramter files that may be co
 		},
         "_comment14": "Channels to write.",
         "channels": ["mKate", "EYFP","EBFP2"],
-		"_comment15": "additional parameters controlling data processing and output; type can be bin_counts or point_clouds",
-		"min_valid_count": 100,
-		"pem_drop_threshold": 5,
+
+        "_comment15": "additional parameters controlling data processing and output; type can be bin_counts or point_clouds",
+        "min_valid_count": 100,
+        "pem_drop_threshold": 5,
 
         "_comment16": "Supported output modalities. histogram reports bin centers and counts. point_cloud reports each particle for an fcs file in seperate files. bayesdb_files
          produces a dataframe for the bayesdb that outlines the metadata and particle files.",
