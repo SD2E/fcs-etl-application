@@ -8,7 +8,7 @@ users to choose an output data frame that best suits their needs.
 
 This application uses five required parameters that are used as inputs.
 
-_analysis-parameters_[^2]  A .json file (e.g. analysis_parameters.json) specifying some information about the analyses to be performed, the parameters
+_[analysis-parameters](#ap)_  A .json file (e.g. analysis_parameters.json) specifying some information about the analyses to be performed, the parameters
 of these analyses, input/output locations of files, etc. If
 reanalysis of the same data set is being performed, this is
 generally the file that will be changed (most likely by TA1).
@@ -16,7 +16,7 @@ Currently, this gets built automatically by the
 manifest_to_fcs_etl_params reactor, based on some assumptions
 about default values.
 
-_cytometer-configuration:_[^1]  A .json file (e.g. cytometer_configuration.json) describing the state of the cytometer used to collect the data. This
+_[cytometer-configuration](#cc)_  A .json file (e.g. cytometer_configuration.json) describing the state of the cytometer used to collect the data. This
 file will generally be provided by the TA3 performer, and
 will tend to change infrequently (if at all).
 
@@ -25,7 +25,7 @@ and file locations for the raw data files to be included.
 This file gets generated automatically by the
 manifest_to_fcs_etl_params reactor, based on the manifest.
 
-_color-model-parameters_[^3]   A .json file (e.g. color_model_parameters.json) describing the
+_[color-model-parameters](#cm)_   A .json file (e.g. color_model_parameters.json) describing the
 species being analyzed, channels, bead peak config, etc.
 his file currently gets built automatically by the
 manifest_to_fcs_etl_params reactor, based on information in
@@ -45,7 +45,7 @@ An additional optional parameter is:
 ## Parameterization Objects
 This section will touch on the elements within the paramter files that may be commonly editted by performers in the SD2 program.
 
-### [^1] Analysis Parameters
+###  <a name="ap">Analysis Parameters</a>
 
 ```
 {
@@ -93,7 +93,7 @@ This section will touch on the elements within the paramter files that may be co
 	}
 ```
 
-### [^2] Cytometer Configuration
+### <a name="cc">Cytometer Configuration</a>
 
 This file describes the instrument configuration. An annotated snippet of this information is provided:
 
@@ -162,7 +162,7 @@ This file describes the instrument configuration. An annotated snippet of this i
 }
 ```
 
-### [^3] Color Model
+###  <a name="cm">Color Model</a>
 
 ```
 {
