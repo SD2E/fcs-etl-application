@@ -8,7 +8,7 @@ users to choose an output data frame that best suits their needs.
 
 This application uses five required parameters that are used as inputs.
 
-_analysis-parameters:[^2]_  A .json file (e.g. analysis_parameters.json) specifying some information about the analyses to be performed, the parameters
+_analysis-parameters_[^2]  A .json file (e.g. analysis_parameters.json) specifying some information about the analyses to be performed, the parameters
 of these analyses, input/output locations of files, etc. If
 reanalysis of the same data set is being performed, this is
 generally the file that will be changed (most likely by TA1).
@@ -16,23 +16,23 @@ Currently, this gets built automatically by the
 manifest_to_fcs_etl_params reactor, based on some assumptions
 about default values.
 
-_cytometer-configuration:[^1]_  A .json file (e.g. cytometer_configuration.json) describing the state of the cytometer used to collect the data. This
+_cytometer-configuration:_[^1]  A .json file (e.g. cytometer_configuration.json) describing the state of the cytometer used to collect the data. This
 file will generally be provided by the TA3 performer, and
 will tend to change infrequently (if at all).
 
-_experimental-data:_  A .json file (e.g. experimental_data.json) describing the URI
+_experimental-data_  A .json file (e.g. experimental_data.json) describing the URI
 and file locations for the raw data files to be included.
 This file gets generated automatically by the
 manifest_to_fcs_etl_params reactor, based on the manifest.
 
-_color-model-parameters:[^3]_   A .json file (e.g. color_model_parameters.json) describing the
+_color-model-parameters_[^3]   A .json file (e.g. color_model_parameters.json) describing the
 species being analyzed, channels, bead peak config, etc.
 his file currently gets built automatically by the
 manifest_to_fcs_etl_params reactor, based on information in
 the cytometer-configuration file, though it is likely that
 this process will need to change as things evolve.
 
-_process-control:_ A .json file (e.g. process_control.json) specifying some
+_process-control_ A .json file (e.g. process_control.json) specifying some
 information about bead file, and control files, for each
 channel. This file gets generated automatically by the
 manifest_to_fcs_etl_params reactor, basedon on information
