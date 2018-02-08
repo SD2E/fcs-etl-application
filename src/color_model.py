@@ -53,7 +53,7 @@ class ColorModel:
     self.octave.eval('TASBEConfig.set(\'heatmapPlotType\',\'contour\')')
     self.octave.eval('TASBEConfig.set(\'outputDirectory\',\'{}\')'.format(self.analysis_params.get('output', {}).get('output_folder', 'output')))
     print 'bead {} \n blank {}'.format(bead_info['file'],blank)
-    self.octave.eval('cm = ColorModel(\'{}\',\'{}\', side_channels, color_channel_files, colorpairfiles)'.format(bead_info['file'],blank))
+    self.octave.eval('cm = ColorModel(\'{}\',\'{}\', side_channels, color_channel_files, colorpairfiles);'.format(bead_info['file'],blank))
     self.octave.eval('cm = set_translation_plot(cm,true);')
     self.octave.eval('cm = set_noise_plot(cm,false);')
     self.octave.eval('cm = set_bead_model(cm,\'{}\');'.format(bead_info['model']))
@@ -63,10 +63,10 @@ class ColorModel:
     self.octave.eval('cm = set_ERF_channel_name(cm,\'{}\');'.format(self.obj['ERF_channel_name']))
     #self.octave.eval('settings = setSetting(settings,\'channel_template_file\',\'{}\');'.format(blank))
     if not bead_info['file']:
-			self.octave.eval('settings = setSetting(settings,\'override_units\',1)')
+			self.octave.eval('settings = setSetting(settings,\'override_units\',1);')
     #self.octave.eval('settings = setSetting(settings,\'override_autofluorescence\', 0)')
 
-    self.octave.eval('settings = setSetting(settings, \'channel_template_file\', \'{}\')'.format(self.template_file))
+    self.octave.eval('settings = setSetting(settings, \'channel_template_file\', \'{}\');'.format(self.template_file))
     #TODO add min
     self.octave.eval('settings = setSetting(settings,\'path\',\'{}\');'.format('plots'))  
     

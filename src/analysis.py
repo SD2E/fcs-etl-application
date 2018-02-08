@@ -41,7 +41,7 @@ class Analysis:
     #self.octave.eval('results[1]')
     
     for i in xrange(1,int(a)+1):
-      self.octave.eval('results {{{}}}.channel_names = channel_names'.format(i))
+      self.octave.eval('results {{{}}}.channel_names = channel_names;'.format(i))
       r = self.octave.eval('results{{{}}};'.format(i))
       r['condition'] = self.octave.eval('file_pairs{{{},1 }};'.format(i))
       self.results.append(r)
