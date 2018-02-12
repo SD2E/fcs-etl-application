@@ -13,10 +13,10 @@ class Cytometer:
   def make_channels(self):
     channels = self.obj['channels']
     self.channels = []
-    self.octave.eval('channels = {};')
+    self.octave.eval('channels = {}')
     
     for i,c in enumerate(channels):
       logging.debug('Instantiating channel {}'.format(c['name']))
       f = c['emission_filter']
       self.octave.eval('c = Channel(\'{}\',{},{},{});'.format(c['name'],c['excitation_wavelength'],f['center'],f['width']))
-      self.octave.eval('channels{'+str(i+1)+'} = c;')
+      self.octave.eval('channels{'+str(i+1)+'} = c')

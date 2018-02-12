@@ -12,7 +12,6 @@ class ColorModel:
     with open(analysis_param_filename) as f:
       self.analysis_params = json.load(f)['tasbe_analysis_parameters']
     self.octave.eval('settings = TASBESettings();')
-    self.octave.eval('settings = setSetting(settings,\'output_folder\',\'{}\');'.format(self.analysis_params.get('output', {}).get('output_folder', 'output')))
 
     self.parse_channels()
 
@@ -37,8 +36,7 @@ class ColorModel:
       print blank
       print "++++ \n\n"
 
-      k_components = self.obj['tasbe_config']['gating']['k_components']
-      k_components = 2
+      k_components = self.obj['tasbe_config']['gating'].get('k_components', 2)
       self.octave.eval('agp = AutogateParameters(); agp.k_components={}; agp.density=0;'.format(k_components))
       self.octave.eval('gating = GMMGating(\'{}\',agp,\'{}\');'.format(blank, self.analysis_params.get('output', {}).get('plots_folder', 'plots')))
 #       self.gating = self.octave.pull('gating')
@@ -53,6 +51,7 @@ class ColorModel:
     self.process_control.get_color_pair_files()
 
     self.octave.eval('TASBEConfig.set(\'heatmapPlotType\',\'contour\')')
+    self.octave.eval('TASBEConfig.set(\'outputDirectory\',\'{}\')'.format(self.analysis_params.get('output', {}).get('output_folder', 'output')))
     print 'bead {} \n blank {}'.format(bead_info['file'],blank)
     self.octave.eval('cm = ColorModel(\'{}\',\'{}\', side_channels, color_channel_files, colorpairfiles);'.format(bead_info['file'],blank))
     self.octave.eval('cm = set_translation_plot(cm,true);')
@@ -64,7 +63,7 @@ class ColorModel:
     self.octave.eval('cm = set_ERF_channel_name(cm,\'{}\');'.format(self.obj['ERF_channel_name']))
     #self.octave.eval('settings = setSetting(settings,\'channel_template_file\',\'{}\');'.format(blank))
     if not bead_info['file']:
-			self.octave.eval('settings = setSetting(settings,\'override_units\',1);')
+			self.octave.eval('settings = setSetting(settings,\'override_units\',1)')
     #self.octave.eval('settings = setSetting(settings,\'override_autofluorescence\', 0)')
 
     self.octave.eval('settings = setSetting(settings, \'channel_template_file\', \'{}\');'.format(self.template_file))
