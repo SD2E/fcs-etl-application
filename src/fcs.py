@@ -40,7 +40,11 @@ def main(args):
   process = ProcessControl(args.process_control,octave)
   color_model = ColorModel(args.color_model_parameters, args.analysis_parameters, octave,process,cytometer)
   experiment_data = Experiment(args.experimental_data,octave)
-  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, octave)
+
+  #experimental_data_filename, analysis_filename, color_mode_filename
+
+  experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, args.experimental_data,
+                                 args.color_model_parameters,octave)
 	
   color_model.make_gating(experiment_data)
   color_model.make_color_model()

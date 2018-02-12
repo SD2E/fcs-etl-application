@@ -124,6 +124,8 @@ class Quicklook:
             channelparams = json.load(f)['tasbe_color_model_parameters']['channel_parameters']
             trans_matrix = []
             chan1_ind = 0;
+            chan1_ind = 0;
+
             for chan1 in channelparams:
                 for chan2 in channelparams[chan1_ind + 1:]:
                     trans_imname = 'color-translation-{}-to-{}.png'.format(chan1['label'], chan2['label'])
@@ -138,7 +140,8 @@ class Quicklook:
                         trans_matrix[-1].append('quicklook_plots/' + trans_imname_r)
                 chan1_ind += 1
             self.notebook['cells'].append(nbf.v4.new_markdown_cell('# Translation models'))
-            self.notebook['cells'].append(self.make_image_matrix_cell(trans_matrix))
+            if len(trans_matrix):
+                self.notebook['cells'].append(self.make_image_matrix_cell(trans_matrix))
 
 
     def make_samples(self):

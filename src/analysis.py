@@ -3,16 +3,29 @@ from pprint import pprint
 import math
 import oct2py
 from wavelength_to_rgb import wavelength_to_rgb
+import os
+from make_bayesdb_files import make_bayesdb_files
 
 class Analysis:
-  def __init__(self,analysis_filename, cytometer_filename, octave):
+  def __init__(self,analysis_filename, cytometer_filename,experimental_data_filename,color_mode_filename,octave):
     self.octave = octave
     with open(analysis_filename) as f:
       self.obj = json.load(f)['tasbe_analysis_parameters']
     with open(cytometer_filename) as f:
       self.cytometer_config = json.load(f)['tasbe_cytometer_configuration']
 
+    self.exp_data_filename = experimental_data_filename
+    self.analysis_filename = analysis_filename
+    self.cm_filename = color_mode_filename
+
+    if 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      output_file = self.obj['output'].get('file')
+      folder = os.path.split(output_file)[0]
+      self.octave.eval('TASBEConfig.set("flow.pointCloudPath","{}");'.format(folder))
+      self.octave.eval('TASBEConfig.set("flow.outputPointCloud",true)')
+
   def analyze(self):
+
     self.octave.eval('bins = BinSequence(0,0.1,10,\'log_bins\');');
     self.octave.eval('ap = AnalysisParameters(bins,{});')
     self.octave.eval('ap = setMinValidCount(ap,100\');')
@@ -43,6 +56,10 @@ class Analysis:
 #     self.octave.eval('outputsettings.FixedInputAxis = [1e4 1e10];')
     self.octave.eval('plot_batch_histograms(results, sample_results, outputsettings, {}, cm);'.format(colorspecs))
     self.print_bin_counts(self.obj['channels'])
+
+    if 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      make_bayesdb_files(self.exp_data_filename, self.analysis_filename, self.cm_filename)
+
 
   def print_bin_counts(self,channels):
 
