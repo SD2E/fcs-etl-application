@@ -31,6 +31,8 @@ class Analysis:
     self.octave.eval('ap = setUseAutoFluorescence(ap,false\');')
     if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
       self.octave.eval('TASBEConfig.set("makePointCloudFiles", true);')
+      folder = os.path.split(self.obj['output']['file'])[0]
+      self.octave.eval('TASBEConfig.set("flow.pointCloudPath","{}");'.format(folder))
     else:
       self.octave.eval('TASBEConfig.set("makePointCloudFiles", false);')
      
@@ -41,7 +43,7 @@ class Analysis:
     #self.octave.eval('results[1]')
     
     for i in xrange(1,int(a)+1):
-      self.octave.eval('results {{{}}}.channel_names = channel_names'.format(i))
+      self.octave.eval('results {{{}}}.channel_names = channel_names;'.format(i))
       r = self.octave.eval('results{{{}}};'.format(i))
       r['condition'] = self.octave.eval('file_pairs{{{},1 }};'.format(i))
       self.results.append(r)

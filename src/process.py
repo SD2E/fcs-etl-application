@@ -32,9 +32,9 @@ class ProcessControl:
 
     print color_order
     
-    self.octave.eval('color_channel_files = {}')
-    self.octave.eval('side_channels = {}')
-    self.octave.eval('channel_names = {}')
+    self.octave.eval('color_channel_files = {};')
+    self.octave.eval('side_channels = {};')
+    self.octave.eval('channel_names = {};')
     i = 1
     j = 0;
     print '\n\nProcessing channels\n\n'
@@ -44,11 +44,11 @@ class ProcessControl:
       for channel in self.obj['channels']:
         print color, channel['name']
         if color == channel['name']:
-          self.octave.eval('color_channel_files{'+str(i)+'} = \''+channel['calibration_file']+'\'')
-          self.octave.eval('channels{{{0}}} = setPrintName(channels{{{0}}},\'{1}\')'.format(j,self.color_model.channel_parameters[color]['label']))
+          self.octave.eval('color_channel_files{'+str(i)+'} = \''+channel['calibration_file']+'\';')
+          self.octave.eval('channels{{{0}}} = setPrintName(channels{{{0}}},\'{1}\');'.format(j,self.color_model.channel_parameters[color]['label']))
           self.octave.eval('side_channels{'+str(i)+'} = channels{'+str(j)+'};')
-          self.octave.eval('channel_names{'+str(i)+'} = getPrintName(channels{'+str(j)+'})')
-          self.octave.eval('channel_long_names{'+str(i)+'} = getName(channels{'+str(j)+'})')
+          self.octave.eval('channel_names{'+str(i)+'} = getPrintName(channels{'+str(j)+'});')
+          self.octave.eval('channel_long_names{'+str(i)+'} = getName(channels{'+str(j)+'});')
           i+=1
 
   # Can't be run until channels is built, by get_color_files
@@ -58,4 +58,4 @@ class ProcessControl:
     for a in range(1, len(pairs)+1): #index of analysis we're working on
       for chan in range(1, len(pairs[a-1]['channels']) + 1):
         self.octave.eval('for c = 1:length(channels); if strcmp(getName(channels{{c}}), "{}"); colorpairfiles{{{}}}{{{}}} = channels{{c}}; end; end;'.format(pairs[a-1]['channels'][chan-1], str(a), str(chan)))
-      self.octave.eval('colorpairfiles{{{}}}{{end+1}} = "{}"'.format(str(a), pairs[a-1]['file']))      
+      self.octave.eval('colorpairfiles{{{}}}{{end+1}} = "{}";'.format(str(a), pairs[a-1]['file']))      

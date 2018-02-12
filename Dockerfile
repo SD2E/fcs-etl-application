@@ -1,8 +1,8 @@
 FROM ubuntu:xenial
 ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
 
-ARG TASBE_REPO=https://github.com/jedsinger/TASBEFlowAnalytics.git
-ARG TASBE_BRANCH=jed_with_point_clouds
+ARG TASBE_REPO=https://github.com/TASBE/TASBEFlowAnalytics.git
+ARG TASBE_BRANCH=master
 
 ARG REACTOR_REPO=https://github.com/SD2E/fcs-etl-reactor.git
 ARG REACTOR_BRANCH=master
