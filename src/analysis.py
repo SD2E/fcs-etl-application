@@ -23,16 +23,19 @@ class Analysis:
     if not os.path.exists(folder_path):
       os.makedirs(folder_path)
 
+    if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      self.octave.eval('TASBEConfig.set("makePointCloudFiles", true);')
+      folder = os.path.split(self.obj['output']['file'])[0]
+      self.octave.eval('TASBEConfig.set("flow.pointCloudPath","{}");'.format(folder))
+    else:
+      self.octave.eval('TASBEConfig.set("makePointCloudFiles", false);')
+
   def analyze(self):
     self.octave.eval('bins = BinSequence(0,0.1,10,\'log_bins\');');
     self.octave.eval('ap = AnalysisParameters(bins,{});')
     self.octave.eval('ap = setMinValidCount(ap,100\');')
     self.octave.eval('ap = AP=setPemDropThreshold(ap,5\');');
     self.octave.eval('ap = setUseAutoFluorescence(ap,false\');')
-    if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
-      self.octave.eval('TASBEConfig.set("makePointCloudFiles", true);')
-    else:
-      self.octave.eval('TASBEConfig.set("makePointCloudFiles", false);')
      
     self.octave.eval('[results sample_results] = per_color_constitutive_analysis(cm,file_pairs,channel_names,ap);')  
     a = self.octave.eval('length(sample_results)')
