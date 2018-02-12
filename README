@@ -1,4 +1,0 @@
-
-
-# To deploy
-`sh deploy.sh fcs-etl-0.3.1 fcs-etl-0.3.1/fcs-etl-app.json`

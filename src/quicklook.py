@@ -4,6 +4,7 @@ import nbformat as nbf
 import json
 import datetime
 from oct2py import io
+import numpy as np
 
 class Quicklook:
     def __init__(self,args, exp_analysis, octave):
@@ -15,7 +16,7 @@ class Quicklook:
 
             self.look = True
             #check for quicklook option set
-            if not a['output'].get('quicklook', False):
+            if not a['output']['quicklook']:
                 self.look = False
                 return
 
@@ -123,6 +124,8 @@ class Quicklook:
             channelparams = json.load(f)['tasbe_color_model_parameters']['channel_parameters']
             trans_matrix = []
             chan1_ind = 0;
+            chan1_ind = 0;
+
             for chan1 in channelparams:
                 for chan2 in channelparams[chan1_ind + 1:]:
                     trans_imname = 'color-translation-{}-to-{}.png'.format(chan1['label'], chan2['label'])
@@ -136,8 +139,8 @@ class Quicklook:
                         shutil.copy2('plots/' + trans_imname_r, self.quicklook_dir + '/quicklook_plots')
                         trans_matrix[-1].append('quicklook_plots/' + trans_imname_r)
                 chan1_ind += 1
-            if len(trans_matrix) > 0:
-                self.notebook['cells'].append(nbf.v4.new_markdown_cell('# Translation models'))
+            self.notebook['cells'].append(nbf.v4.new_markdown_cell('# Translation models'))
+            if len(trans_matrix):
                 self.notebook['cells'].append(self.make_image_matrix_cell(trans_matrix))
 
 
@@ -194,7 +197,7 @@ class Quicklook:
     def make_image_cell(self, source):
         filename = source.split('/')[-1]
         if os.path.exists(source):
-            markup = '<img src="quicklook_plots/{}">'.format(filename)
+            markup = '<img src="quicklook_plots{}">'.format(filename)
             shutil.copy2(source, self.quicklook_dir + '/quicklook_plots/{}'.format(filename))
         else:
             markup = 'Image file {} not found'.format(source)

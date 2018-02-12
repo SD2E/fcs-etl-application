@@ -56,6 +56,6 @@ class ExperimentalCondition:
 
 # testing method
 if __name__ == '__main__':
-    e = ExperimentalCondition("http://hub-api.sd2e.org/sparql","http://hub.sd2e.org/user/nicholasroehner/rule_30/pAN1717_system_5_0p002_1/1")
+    e = ExperimentalCondition("https://hub-api.sd2e.org/sparql","http://hub.sd2e.org/user/nicholasroehner/rule_30/pAN1717_system_5_0p002_1/1")
     print e
 
