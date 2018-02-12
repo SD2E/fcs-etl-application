@@ -44,7 +44,7 @@ def main(args):
 
   experiment_analysis = Analysis(args.analysis_parameters, args.cytometer_configuration, args.experimental_data,
                                  args.color_model_parameters,octave)
-	
+
   color_model.make_gating(experiment_data)
   color_model.make_color_model()
   experiment_analysis.analyze()
