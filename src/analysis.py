@@ -26,7 +26,6 @@ class Analysis:
     if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
       self.octave.eval('TASBEConfig.set("flow.outputPointCloud", true);')
       folder = os.path.split(self.obj['output']['file'])[0]
-      print('\n\n++++++++\n' + folder + '\n+++++++++\n\n')
       self.octave.eval('TASBEConfig.set("flow.pointCloudPath","{}");'.format(folder))
     else:
       self.octave.eval('TASBEConfig.set("flow.outputPointCloud", false);')
