@@ -23,6 +23,13 @@ class Analysis:
     if not os.path.exists(folder_path):
       os.makedirs(folder_path)
 
+    if 'point_clouds' in self.obj.get('additional_outputs', []) or 'bayesdb_files' in self.obj.get('additional_outputs', []):
+      self.octave.eval('TASBEConfig.set("flow.outputPointCloud", true);')
+      folder = os.path.split(self.obj['output']['file'])[0]
+      self.octave.eval('TASBEConfig.set("flow.pointCloudPath","{}");'.format(folder))
+    else:
+      self.octave.eval('TASBEConfig.set("flow.outputPointCloud", false);')
+
   def analyze(self):
     self.octave.eval('bins = BinSequence(0,0.1,10,\'log_bins\');');
     self.octave.eval('ap = AnalysisParameters(bins,{});')
@@ -53,15 +60,14 @@ class Analysis:
     for longname in longnames:
         colorspecs.append(wavelength_to_rgb([x['emission_filter']['center'] for x in self.cytometer_config['channels'] if x['name'] == longname][0]))
     colorspecs = '{' + ','.join(colorspecs) + '}'
-    self.octave.eval('outputsettings = OutputSettings("Exp", "", "", "{}");'.format(self.obj.get('output', {}).get('plots_folder', 'plots')))
-#     self.octave.eval('outputsettings.FixedInputAxis = [1e4 1e10];')
-    self.octave.eval('plot_batch_histograms(results, sample_results, outputsettings, {}, cm);'.format(colorspecs))
+   # self.octave.eval('outputsettings = OutputSettings("Exp", "", "", "{}");'.format(self.obj.get('output', {}).get('plots_folder', 'plots')))
+    self.octave.eval('TASBEConfig.set(\'OutputSettings.StemName\',\'{}\')').format(format(self.obj.get('output', {}).get('plots_folder', 'plots')))
+    self.octave.eval('TASBEConfig.set(\'OutputSettings.FixedInputAxis\',false);')
+    self.octave.eval('plot_batch_histograms(results, sample_results,{}, cm);'.format(colorspecs))
 
     self.print_bin_counts(self.obj['channels'])
     if 'bayesdb_files' in self.obj.get('additional_outputs', []):
       make_bayesdb_files(self.exp_data_filename, self.analysis_filename, self.cm_filename)
-
-
 
   def print_bin_counts(self,channels):
 

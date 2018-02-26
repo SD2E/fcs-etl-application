@@ -2,8 +2,8 @@ FROM ubuntu:xenial
 ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
 
 ARG TASBE_REPO=https://github.com/TASBE/TASBEFlowAnalytics.git
-ARG TASBE_BRANCH=develop
-
+ARG TASBE_TAG=5.0.0
+ARG TASBE_BRANCH=master
 
 RUN apt-get update
 RUN apt-get install software-properties-common python-software-properties -y
@@ -55,6 +55,7 @@ RUN apt-get install python-scipy -y
 RUN cd / && \
     git clone  -b $TASBE_BRANCH $TASBE_REPO && \
     cd /TASBEFlowAnalytics && \
+    git checkout tags/$TASBE_TAG &&\
     make install && \
     octave --eval 'pkg install -forge io'
 

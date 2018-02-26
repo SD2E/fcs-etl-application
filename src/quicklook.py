@@ -170,7 +170,7 @@ class Quicklook:
         markdown += '\n|---' + ''.join(['|---' for c in channels]) + '|'
         markdown += '\n| Geo. Mean ' + ''.join(['| {0:.2f} '.format(float(m)) for m in means]) + '|'
         markdown += '\n| Geo. STD ' + ''.join(['| {0:.2f} '.format(float(s)) for s in stds]) + '|'
-        plotfilename = self.octave.eval('sanitize_name("Exp-{}-bincounts");'.format(condition))
+        plotfilename = self.octave.eval('sanitize_name("-{}-bincounts");'.format(condition))
         if (len(plotfilename) > 75):
             plotfilename = 'X' + plotfilename[-74:]
 
