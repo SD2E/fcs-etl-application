@@ -1,10 +1,10 @@
 {
   "name": "jeg-fcs-etl",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "executionType": "CLI",
   "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "jeg/apps/fcs-etl-0.3.3",
+  "deploymentPath": "jeg/apps/fcs-etl-0.3.4",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
