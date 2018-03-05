@@ -7,7 +7,7 @@ services:
 
 before_install:
   - docker --version
-  - cd src && docker build -t fcs-etl .
+  - docker build -t fcs-etl .
   - docker run fcs-etl python /src/fcs.py --help
 
 script:
