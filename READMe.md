@@ -1,6 +1,8 @@
 
 # FCS-ETL Reactor
 
+[![Build Status](https://travis-ci.org/SD2E/fcs-etl-application.svg?branch=master)](https://travis-ci.org/SD2E/fcs-etl-application)
+
 This application processes batches of flow cytometry reads from the SD2 program and allows
 users to choose an output data frame that best suits their needs.
 
