@@ -1,1 +1,1 @@
-docker build -f Dockerfile -t fcs-develop .
+docker build -f Dockerfile -t fcs .
