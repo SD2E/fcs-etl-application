@@ -17,11 +17,11 @@ python:
 services:
   - docker
 before_install:
+  - export PATH=$PATH:$HOME/sd2e-cloud-cli/bin
   - pip install git+https://github.com/TACC/agavepy.git@develop configparser
   - sudo apt-get -qq update 
   - sudo apt-get install -y jq
   - bash scripts/install_configure_cli.sh
-  - export PATH=$PATH:$HOME/sd2e-cloud-cli/bin
   - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}"
 before_script:
   - python scripts/agave_files_sync.py -r ${AGAVEURI} .
