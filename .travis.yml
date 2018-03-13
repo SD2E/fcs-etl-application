@@ -19,17 +19,17 @@ services:
 before_install:
   - export PATH=$PATH:$HOME/sd2e-cloud-cli/bin
   - pip install git+https://github.com/TACC/agavepy.git@develop configparser
-  - sudo apt-get -qq update 
-  - sudo apt-get install -y jq
+  - sudo apt-get -qq update && apt-get install -y jq
   - bash scripts/install_configure_cli.sh
   - echo "${_REGISTRY_PASSWORD}" | docker login --username ${_REGISTRY_USERNAME} --password-stdin
-  - docker pull ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} || true
-  - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" --push
+  - if ((PULL)); then docker pull ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} || true ; fi
+  - if ((BUILD)); then apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" ; fi
 before_script:
   - python scripts/agave_files_sync.py -r ${AGAVEURI} .
 script:
   - bash tests/run_functional_test.sh "${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
-  - apps-deploy -T -O ${_REGISTRY_USERNAME} --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" fcs-etl-0.3.3
+  - apps-deploy -T -O ${_REGISTRY_USERNAME} --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" --no-build fcs-etl-0.3.3
+  - pwd && ls -alth
   - bash tests/run_tacc_cloud_job.sh
 after_script:
   - docker images
