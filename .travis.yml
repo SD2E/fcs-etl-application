@@ -22,11 +22,13 @@ before_install:
   - sudo apt-get -qq update 
   - sudo apt-get install -y jq
   - bash scripts/install_configure_cli.sh
-  - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}"
+  - echo "${_REGISTRY_PASSWORD}" | docker login --username ${_REGISTRY_USERNAME} --password-stdin
+  - docker pull ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} || true
+  - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" --push
 before_script:
   - python scripts/agave_files_sync.py -r ${AGAVEURI} .
 script:
-  - bash tests/run_functional_test.sh "${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
+  - bash tests/run_functional_test.sh ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}
   - apps-deploy -T -O ${_REGISTRY_USERNAME} --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" fcs-etl-0.3.3
   - bash tests/run_tacc_cloud_job.sh
 after_script:
