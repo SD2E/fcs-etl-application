@@ -18,7 +18,8 @@ services:
   - docker
 before_install:
   - pip install git+https://github.com/TACC/agavepy.git@develop configparser
-  - apt-get install -y jq
+  - sudo apt-get -qq update 
+  - sudo apt-get install -y jq
   - bash scripts/install_configure_cli.sh
   - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}"" --tag "${CONTAINER_TAG}"
 before_script:
