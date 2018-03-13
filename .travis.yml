@@ -28,7 +28,7 @@ before_install:
 before_script:
   - python scripts/agave_files_sync.py -r ${AGAVEURI} .
 script:
-  - bash tests/run_functional_test.sh ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}
+  - bash tests/run_functional_test.sh "${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
   - apps-deploy -T -O ${_REGISTRY_USERNAME} --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}" fcs-etl-0.3.3
   - bash tests/run_tacc_cloud_job.sh
 after_script:

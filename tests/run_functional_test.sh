@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONTAINER_IMAGE=$1
-if [ -z "$CONTAINER_IMAGE" ]; then
+if [ -z "${CONTAINER_IMAGE}" ]; then
   CONTAINER_IMAGE="sd2e/fcs:0.3.3"
 fi
 
@@ -35,8 +35,8 @@ function file_exists_not_empty(){
     fi
 }
 
-docker run -t -v $PWD/$JOBDIR:/data fcs-etl ls /data
-docker run -t -v $PWD/$JOBDIR:/data fcs-etl python /src/test_scratch.py
+docker run -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} ls /data
+docker run -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
 docker run -v $PWD/$JOBDIR:/data -w /data \
            -e "CYT_CONFIG=/data/cytometer_configuration.json" \
            -e "PROC_CONTROL=/data/process_control_data.json" \
