@@ -35,9 +35,6 @@ function file_exists_not_empty(){
     fi
 }
 
-log "Syncing data from $(basename $AGAVEURI)..."
-python scripts/agave-files-sync.py -r ${AGAVEURI} .
-
 docker run -t -v $PWD/$JOBDIR:/data fcs-etl ls /data
 docker run -t -v $PWD/$JOBDIR:/data fcs-etl python /src/test_scratch.py
 docker run -v $PWD/$JOBDIR:/data -w /data \
