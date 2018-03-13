@@ -21,6 +21,7 @@ before_install:
   - sudo apt-get -qq update 
   - sudo apt-get install -y jq
   - bash scripts/install_configure_cli.sh
+  - export PATH=$PATH:$HOME/sd2e-cloud-cli/bin
   - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}" --tag "${CONTAINER_TAG}"
 before_script:
   - python scripts/agave_files_sync.py -r ${AGAVEURI} .
