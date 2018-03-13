@@ -37,19 +37,13 @@ $ time docker push sd2e/fcs:optimize
 real    1m43.977s
 user    0m0.219s
 sys 0m0.116s
-
-docker images sd2e/fcs:optimize
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-sd2e/fcs            optimize            70659799d467        6 minutes ago       2.2GB
-
-
-$ time docker build --squash --no-cache -t sd2e/fcs:optimize .
-
-real    7m4.794s
-user    0m0.570s
-sys 0m0.366s
-
-$ time docker push sd2e/fcs:optimize
-
 ```
+
+## Order of Operations
+
+1. octave repo added before the update/install.
+2. octave needs to be installed before TASBE
+3. Numpy and SciPy need to be installed via apt
+3. TASBE should be updated as frequently as the python code
+
 

@@ -1,10 +1,10 @@
 {
-  "name": "sd2eadm-fcs-etl",
-  "version": "0.3.3",
+  "name": "{{ agave.username }}-{{ app.name }}",
+  "version": "{{ app.version }}",
   "executionType": "CLI",
   "executionSystem": "hpc-tacc-jetstream",
   "parallelism": "SERIAL",
-  "deploymentPath": "sd2eadm/apps/fcs-etl-0.3.3",
+  "deploymentPath": "{{ agave.username }}/apps/{{ app.name }}-{{ app.version }}",
   "deploymentSystem": "data-sd2e-projects-users",
   "defaultProcessorsPerNode": 1,
   "defaultNodeCount": 1,
@@ -118,7 +118,18 @@
       }
     }
   ],
-  "parameters":[],
+  "parameters":[
+    {
+      "id": "CONTAINER_IMAGE",
+      "value": {
+        "default": "{{ docker.username }}/{{ docker.repo }}:{{ docker.tag }}",
+        "type": "string",
+        "visible": false,
+        "required": true,
+        "order": 99
+      }
+    }
+  ],
   "outputs": [{
     "id": "junitDirectory",
     "value": {

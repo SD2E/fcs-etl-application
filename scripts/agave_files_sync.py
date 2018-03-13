@@ -22,9 +22,9 @@ agave_prefix = 'agave://'
 url_prefix = 'http'
 
 # file types; set here to avoid repeated string use
-agave = 'agave'
-url = 'url'
-local = 'local'
+AGAVE = 'agave'
+URL = 'url'
+LOCAL = 'local'
 
 
 def get_logger(name):
@@ -108,17 +108,17 @@ def get_path_type(path):
     '''Determines if path is of local, agave, or url types.'''
     path_type=''
     if path[:len(agave_prefix)] == agave_prefix:
-        path_type = agave
+        path_type = AGAVE
     elif path[:len(url_prefix)] == url_prefix:
-        path_type = url
+        path_type = URL
     else:
         assert isfile(path) or isdir(path), 'Invalid local path: {}'.format(path)
-        path_type = local
+        path_type = LOCAL
     return path_type
 
 def agave_path_builder(base, path, recursive=False):
     '''Generates a ready-to-use agave url with the cached base and user-provided path'''
-    assert get_path_type(path) == agave, 'Path is type {}, must be type agave'.format(get_path_type(path))
+    assert get_path_type(path) == AGAVE, 'Path is type {}, must be type agave'.format(get_path_type(path))
     # strip agave prefix
     path = path[len(agave_prefix): ]
     # return full path
@@ -137,10 +137,10 @@ def sametype(local_filepath, agave_description):
     '''Checks if local and agave files are both directories or files. Returns boolean.'''
     return (isfile(local_filepath) and agave_description['type'] == 'file') or (isdir(local_filepath) and agave_description['type'] == 'dir')
 
-def update_import_destfiles_dict(new_dest, headers, dest_type=url, url_base=None):
+def update_import_destfiles_dict(new_dest, headers, dest_type=URL, url_base=None):
     '''Helper function to update dictionary of destination file information'''
     # get list url if agave
-    if dest_type == agave:
+    if dest_type == AGAVE:
         assert url_base is not None, 'Must pass baseurl when using agave url'
         new_dest = agave_path_setlisting(new_dest, url_base)
     fdict = { i['name']: {'lastModified':i['lastModified'], 'type':i['type'], 'path':i['path']}
@@ -159,6 +159,7 @@ def list_agave_dir_files(url, headers):
 
 def files_download(url, headers, path='.', name=None):
     '''Downloads and saves file at url. Defaults to saving in the current directory without changing name, but these options are available.'''
+    logger.info("Downloading {}".format(url))
     r = get(url, headers=headers)
     assert r.status_code == 200, 'files-download failed with code {}'.format(r.status_code)
     # set up path
@@ -246,9 +247,9 @@ def newer_importfile(import_description, dest_description):
 # end modification time helper functions
 
 # recursive files functions
-def recursive_get(url, headers, destination='.', url_type=url, url_base=None, tab=''):
+def recursive_get(url, headers, destination='.', url_type=URL, url_base=None, tab=''):
     '''Performs recursive files-get from remote to local location (ONLY AGAVE CURRENTLY SUPPORTED)'''
-    assert url_type == agave, 'Only agave currently supported for recursive files-get; source was type {}'.format(url_type)
+    assert url_type == AGAVE, 'Only agave currently supported for recursive files-get; source was type {}'.format(url_type)
     # get listable url and file-list
     list_url = agave_path_setlisting(url, url_base)
     list_json = list_agave_dir_files(list_url, headers)
@@ -294,11 +295,11 @@ def recursive_get(url, headers, destination='.', url_type=url, url_base=None, ta
                 logger.debug('skipping {} ({})'.format(filename, 'exists'))
     return
 
-def recursive_upload(url, headers, source='.', url_type=url, url_base=None, tab=''):
+def recursive_upload(url, headers, source='.', url_type=URL, url_base=None, tab=''):
     '''Recursively upload files from a local directory to an agave directory'''
 
     # if agave url, make listable
-    if url_type == agave:
+    if url_type == AGAVE:
         list_url = agave_path_setlisting(url, url_base, listings=True)
     else:
         logger.warning('WARNING: recursive upload not tested for non-agave remote directories')
@@ -332,10 +333,10 @@ def recursive_upload(url, headers, source='.', url_type=url, url_base=None, tab=
             recursive_upload(recursion_url, headers, source=fullpath, url_type=url_type, url_base=url_base, tab=tab+'  ')
     return
 
-def recursive_import(source, destination, headers, stype=url, dtype=url, url_base=None, tab=''):
+def recursive_import(source, destination, headers, stype=URL, dtype=URL, url_base=None, tab=''):
     '''Performs recursive files-import between remote locations (ONLY AGAVE CURRENTLY SUPPORTED).'''
-    assert stype == agave, 'Only agave currently supported for recursive files-get; source was type {}'.format(stype)
-    assert dtype == agave, 'Only agave currently supported for recursive files-get; destination was type {}'.format(dtype)
+    assert stype == AGAVE, 'Only agave currently supported for recursive files-get; source was type {}'.format(stype)
+    assert dtype == AGAVE, 'Only agave currently supported for recursive files-get; destination was type {}'.format(dtype)
 
     # get source list url and dict
     slisturl = agave_path_setlisting(source, url_base)
@@ -419,13 +420,13 @@ if __name__ == '__main__':
     dest_type = get_path_type(args.destination)
 
     # reformat agave urls
-    if source_type == agave:
+    if source_type == AGAVE:
         args.source = agave_path_builder(baseurl, args.source, recursive=args.recursive)
-    if dest_type == agave:
+    if dest_type == AGAVE:
         args.destination = agave_path_builder(baseurl, args.destination)
 
     # source=agave/url and dest=local --> get
-    if source_type != local and dest_type == local:
+    if source_type != LOCAL and dest_type == LOCAL:
         if args.recursive:
             logger.debug('Beginnning recursive download...')
             recursive_get(args.source, h, destination=args.destination, url_type=source_type, url_base=baseurl)
@@ -434,7 +435,7 @@ if __name__ == '__main__':
             files_download(args.source, h, path=args.destination, name=args.name)
     
     # source=local and dest=agave --> upload
-    elif source_type == local and dest_type == agave:
+    elif source_type == LOCAL and dest_type == AGAVE:
         if args.recursive:
             logger.debug('Beginning recursive upload...')
             recursive_upload(args.destination, h, source=args.source, url_type=dest_type, url_base=baseurl)
@@ -443,8 +444,8 @@ if __name__ == '__main__':
             files_upload(expanduser(args.source), args.destination, h, new_name=args.name)
 
     # source=agave/url and dest=agave --> import
-    elif source_type != local and dest_type == agave:
-        if source_type == url:
+    elif source_type != LOCAL and dest_type == AGAVE:
+        if source_type == URL:
             logger.warning('WARNING: generic urls not yet tested')
 
         if args.recursive:

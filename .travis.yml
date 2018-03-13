@@ -1,11 +1,15 @@
 env:
   global:
+    - _AGAVE_TENANT="sd2e"
     - _AGAVE_APISERVER="https://api.sd2e.org"
     - _AGAVE_USERNAME="sd2etest"
     - _AGAVE_APIKEY="wzJw3V7Djv_iyzge6lvwyIFyxEMa"
     - _AGAVE_CLIENT_NAME="travisci-agave-files"
+    - _REGISTRY_USERNAME="sd2etest"
     - AGAVEURI=agave://data-sd2e-community/sample/fcs-tasbe/fcs-etl-reactor-example
-    - JOBDIR=tmpdir
+    - JOBDIR=fcs-etl-reactor-example
+    - CONTAINER_REPO="fcs-etl"
+    - CONTAINER_TAG="test"
 sudo: required
 language: python
 python:
@@ -13,17 +17,15 @@ python:
 services:
   - docker
 before_install:
-  - pip install git+https://github.com/TACC/agavepy.git@develop
-  - docker pull fcs-etl:build || true
-  - docker build --pull -t fcs-etl:travis -f Dockerfile .
+  - pip install git+https://github.com/TACC/agavepy.git@develop configparser
+  - apt-get install -y jq
+  - bash scripts/install_configure_cli.sh
+  - apps-build-container -O "${_REGISTRY_USERNAME}" --image "${CONTAINER_REPO}"" --tag "${CONTAINER_TAG}"
 before_script:
-  - python scripts/agave-files-sync.py -r ${AGAVEURI} . && mv fcs-etl-reactor-example ${JOBDIR}
+  - python scripts/agave_files_sync.py -r ${AGAVEURI} .
 script:
-  - echo "Get help?"
-  - docker run fcs-etl:travis python /src/fcs.py --help
-  - echo "Run internal unit tests in container"
-  - docker run fcs-etl:travis python /src/test_scratch.py
-  - echo "Run functional test in container"
-  - docker run -v $JOBDIR:/data -e "CYT_CONFIG=/data/cytometer_configuration.json" -e "PROC_CONTROL=/data/process_control_data.json" -e "EXP_DATA=/data/experimental_data.json" -e "COLOR_MODEL_PARAMS=/data/color_model_parameters.json" -e "ANALYSIS_PARAMS=/data/analysis_parameters.json" fcs-etl:travis
+  - bash tests/run_functional_test.sh "${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
+  - apps-deploy -T -O ${_REGISTRY_USERNAME} --image "${CONTAINER_REPO}"" --tag "${CONTAINER_TAG}"
+  - bash tests/run_tacc_cloud_job.sh
 after_script:
   - docker images
