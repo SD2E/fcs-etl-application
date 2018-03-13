@@ -18,8 +18,9 @@ services:
   - docker
 before_install:
   - export PATH=$PATH:$HOME/sd2e-cloud-cli/bin
-  - pip install git+https://github.com/TACC/agavepy.git@develop configparser
-  - sudo apt-get -qq update && apt-get install -y jq
+  - sudo pip install git+https://github.com/TACC/agavepy.git@develop configparser
+  - sudo apt-get -qq update
+  - sudo apt-get install -y jq
   - bash scripts/install_configure_cli.sh
   - echo "${_REGISTRY_PASSWORD}" | docker login --username ${_REGISTRY_USERNAME} --password-stdin
   - if ((PULL)); then docker pull ${_REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} || true ; fi
