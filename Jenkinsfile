@@ -23,20 +23,10 @@ pipeline {
                 sh "make-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
             }
         }
-        stage('List contents of current directory') {
-            steps {
-                pwd()
-                sh "ls -alth"
-            }
-        }
         stage('Copy in test data') {
             steps {
+                sh "ls -alth"
                 sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
-            }
-        }
-        stage('List contents of current directory') {
-            steps {
-                pwd()
                 sh "ls -alth"
             }
         }
