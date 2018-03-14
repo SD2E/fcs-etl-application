@@ -34,9 +34,19 @@ pipeline {
                 sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
             }
         }
+        stage('List contents of current directory') {
+            steps {
+                pwd()
+                sh "ls -alth"
+            }
+        }
         stage('Build app container') { 
             steps {
                 sh "apps-build-container -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
+            }
+        }
+        steps {
+                sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
             }
         }
     }
