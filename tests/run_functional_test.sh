@@ -1,13 +1,9 @@
 #!/bin/bash
 
 CONTAINER_IMAGE=$1
-if [ -z "${CONTAINER_IMAGE}" ]; then
-  CONTAINER_IMAGE="sd2e/fcs:0.3.3"
-fi
+JOBDIR=$2
 
 set -e
-
-JOBDIR=fcs-etl-reactor-example
 
 function die(){
     echo "[ERROR]: $1"

@@ -3,7 +3,7 @@
 pipeline {
     agent any
     environment {
-        AGAVE_DATA_URI    = "agave://data-sd2e-community/sample/fcs-tasbe/fcs-etl-reactor-example"
+        AGAVE_DATA_URI    = "agave://data-sd2e-community/sample/fcs-etl-application/test_data"
         CONTAINER_REPO    = "fcs-etl"
         CONTAINER_TAG     = "test"
         AGAVE_CACHE_DIR   = "${HOME}/credentials_cache/${JOB_BASE_NAME}"
@@ -26,12 +26,12 @@ pipeline {
         }
         stage('Conditionally, copy in test data') {
             when { not {
-                    expression { fileExists('fcs-etl-reactor-example') }
+                    expression { fileExists('test_data') }
                    }
             }
             steps {
                 sh "ls -alth"
-                sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
+                sh "files-get -r -S data-sd2e-community /sample/fcs-etl-application/test_data > files-get.log 2>&1"
                 sh "ls -alth"
             }
         }
@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Run functional test(s)') { 
             steps {
-                sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
+                sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} test_data"
             }
         }
     }
