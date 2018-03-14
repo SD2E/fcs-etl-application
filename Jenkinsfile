@@ -23,15 +23,13 @@ pipeline {
                 sh "make-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
             }
         }
-        stage('Copy in test data') {
+        stage('Conditionally, copy in test data') {
+            when {
+                expression { (fileExists('fcs-etl-reactor-example') == false }
+            }
             steps {
                 sh "ls -alth"
-                def myfile = 'fcs-etl-reactor-example'
-                if (fileExists(myfile)) {
-                    sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
-                } else {
-                    echo "Skipping copy of ${myfile} since it already exists"
-                }   
+                sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
                 sh "ls -alth"
             }
         }
