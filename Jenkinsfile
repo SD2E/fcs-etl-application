@@ -30,10 +30,10 @@ pipeline {
                 sh "make-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
             }
         }
-        stage('Sync in test data') {
+        stage('Copy in test data') {
             steps {
-                sh "agave_files_sync.py -r ${AGAVE_DATA_URI} ."
-            }            
+                sh "files-get -q -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example"
+            }
         }
         stage('Build app container') { 
             steps {
