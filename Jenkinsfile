@@ -24,8 +24,9 @@ pipeline {
             }
         }
         stage('Conditionally, copy in test data') {
-            when {
-                expression { (fileExists('fcs-etl-reactor-example') == false }
+            when { not {
+                    expression { (fileExists('fcs-etl-reactor-example') }
+                   }
             }
             steps {
                 sh "ls -alth"
