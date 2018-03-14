@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Copy in test data') {
             steps {
-                sh "files-get -q -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example"
+                sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example"
             }
         }
         stage('Build app container') { 
