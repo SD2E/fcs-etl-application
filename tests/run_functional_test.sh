@@ -7,7 +7,6 @@ fi
 
 set -e
 
-AGAVEURI=agave://data-sd2e-community/sample/fcs-tasbe/fcs-etl-reactor-example
 JOBDIR=fcs-etl-reactor-example
 
 function die(){
