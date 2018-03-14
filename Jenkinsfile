@@ -7,7 +7,8 @@ pipeline {
         CONTAINER_REPO  = "fcs-etl"
         CONTAINER_TAG   = "test"
         AGAVE_CACHE_DIR = "${WORKSPACE}//credentials_cache/${JOB_BASE_NAME}"
-        AGAVE_TENANTID    = 'sd2e'
+        AGAVE_TENANTID  = 'sd2e'
+        AGAVE_APISERVER = 'https://api.sd2e.org'
         AGAVE_USERNAME    = credentials('sd2etest-tacc-username')
         AGAVE_PASSWORD    = credentials('sd2etest-tacc-password')
         REGISTRY_USERNAME = credentials('sd2etest-dockerhub-username')
