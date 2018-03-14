@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Conditionally, copy in test data') {
             when { not {
-                    expression { (fileExists('fcs-etl-reactor-example') }
+                    expression { fileExists('fcs-etl-reactor-example') }
                    }
             }
             steps {
