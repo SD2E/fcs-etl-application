@@ -7,6 +7,7 @@ pipeline {
         CONTAINER_REPO    = "fcs-etl"
         CONTAINER_TAG     = "test"
         AGAVE_CACHE_DIR   = "${HOME}/credentials_cache/${JOB_BASE_NAME}"
+        AGAVE_JSON_PARSER = "jq"
         AGAVE_TENANTID    = "sd2e"
         AGAVE_APISERVER   = "https://api.sd2e.org"
         AGAVE_USERNAME    = credentials('sd2etest-tacc-username')
