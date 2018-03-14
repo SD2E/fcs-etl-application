@@ -26,7 +26,12 @@ pipeline {
         stage('Copy in test data') {
             steps {
                 sh "ls -alth"
-                sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
+                def myfile = 'fcs-etl-reactor-example'
+                if (fileExists(myfile)) {
+                    sh "files-get -r -S data-sd2e-community /sample/fcs-tasbe/fcs-etl-reactor-example > files-get.log 2>&1"
+                } else {
+                    echo "Skipping copy of ${myfile} since it already exists"
+                }   
                 sh "ls -alth"
             }
         }
