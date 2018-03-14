@@ -6,7 +6,7 @@ pipeline {
         AGAVE_DATA_URI  = "agave://data-sd2e-community/sample/fcs-tasbe/fcs-etl-reactor-example"
         CONTAINER_REPO  = "fcs-etl"
         CONTAINER_TAG   = "test"
-        AGAVE_CACHE_DIR = "${WORKSPACE}//credentials_cache/${JOB_BASE_NAME}"
+        AGAVE_CACHE_DIR = "${HOME}/credentials_cache/${JOB_BASE_NAME}"
         AGAVE_TENANTID  = 'sd2e'
         AGAVE_APISERVER = 'https://api.sd2e.org'
         AGAVE_USERNAME    = credentials('sd2etest-tacc-username')
