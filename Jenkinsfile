@@ -45,7 +45,8 @@ pipeline {
                 sh "apps-build-container -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
             }
         }
-        steps {
+        stage('Run functional test(s)') { 
+            steps {
                 sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG}"
             }
         }
