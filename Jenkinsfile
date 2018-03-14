@@ -46,13 +46,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            sh "delete-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
-        }
-        failure {
-            slackSend color: 'red', message: 'Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
-
-        }
-    }
 }
