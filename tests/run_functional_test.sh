@@ -3,6 +3,11 @@
 CONTAINER_IMAGE=$1
 JOBDIR=$2
 
+UNDER_CI=0
+CI_PLATFORM=
+CI_UID=$(id -u $USER)
+CI_GID=$(id -g $USER)
+
 set -e
 
 function die(){
@@ -30,9 +35,35 @@ function file_exists_not_empty(){
     fi
 }
 
-docker run -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} ls /data
-docker run -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
-docker run -v $PWD/$JOBDIR:/data -w /data \
+function detect_ci() {
+
+  if [ -z "$TRAVIS" ]; then
+    if [ "$TRAVIS" == "true" ]; then
+      UNDER_CI=1
+      CI_PLATFORM="TRAVIS"
+    fi
+  fi
+
+  if [ -z "$JENKINS_URL" ]; then
+    UNDER_CI=1
+    CI_PLATFORM="JENKINS"
+  fi
+
+  if ((UNDER_CI)); then
+    log "CI detected. Platform: $CI_PLATFORM"
+  fi
+
+}
+
+detect_ci
+dockeropts=
+if ((UNDER_CI)); then
+  dockeropts=" --user=0:${CI_GID}"
+fi
+
+docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} ls /data
+docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
+docker run $dockeropts -v $PWD/$JOBDIR:/data -w /data \
            -e "CYT_CONFIG=/data/cytometer_configuration.json" \
            -e "PROC_CONTROL=/data/process_control_data.json" \
            -e "EXP_DATA=/data/experimental_data.json" \
