@@ -14,11 +14,6 @@ function die(){
     echo "[ERROR]: $1"
 }
 
-function die(){
-    echo "[ERROR]: $1"
-    exit 1
-}
-
 function log(){
     echo "[INFO]: $1"
 }
@@ -37,6 +32,7 @@ function file_exists_not_empty(){
 
 function detect_ci() {
 
+  ## detect whether we're running under continous integration
   if [ -z "$TRAVIS" ]; then
     if [ "$TRAVIS" == "true" ]; then
       UNDER_CI=1
@@ -55,11 +51,19 @@ function detect_ci() {
 
 }
 
+# Tweak config for Docker depending on if we're running under CI
 detect_ci
 dockeropts=
 if ((UNDER_CI)); then
+  # If running a Dockerized process with a volume mount
+  # written files will be owned by root and unwriteable by
+  # the CI user. We resolve this by setting the group, which
+  # is the same approach we use in the container runner 
+  # that powers container-powered Agave jobs
   dockeropts=" --user=0:${CI_GID}"
 fi
+
+set -x
 
 docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} ls /data
 docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
@@ -69,6 +73,8 @@ docker run $dockeropts -v $PWD/$JOBDIR:/data -w /data \
            -e "EXP_DATA=/data/experimental_data.json" \
            -e "COLOR_MODEL_PARAMS=/data/color_model_parameters.json" \
            -e "ANALYSIS_PARAMS=/data/analysis_parameters.json" ${CONTAINER_IMAGE}
+
+set +x
 
 # Validate outputs
 # Checking only for existence and non-emptiness here
