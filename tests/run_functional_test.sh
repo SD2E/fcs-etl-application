@@ -33,20 +33,20 @@ function file_exists_not_empty(){
 function detect_ci() {
 
   ## detect whether we're running under continous integration
-  if [ -z "$TRAVIS" ]; then
+  if [ ! -z "$TRAVIS" ]; then
     if [ "$TRAVIS" == "true" ]; then
       UNDER_CI=1
       CI_PLATFORM="TRAVIS"
     fi
   fi
 
-  if [ -z "$JENKINS_URL" ]; then
+  if [ ! -z "$JENKINS_URL" ]; then
     UNDER_CI=1
     CI_PLATFORM="JENKINS"
   fi
 
   if ((UNDER_CI)); then
-    log "CI detected. Platform: $CI_PLATFORM"
+    log "Continous integration detected ($CI_PLATFORM)"
   fi
 
 }
