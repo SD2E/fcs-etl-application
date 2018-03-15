@@ -48,6 +48,8 @@ pipeline {
         stage('Deploy app to TACC.cloud') { 
             steps {
                 sh "apps-deploy -T -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG} fcs-etl-0.3.3 || true"
+                sh "ls -alth"
+                sh "cat deploy-*"
             }
         }
     }
