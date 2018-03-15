@@ -10,9 +10,9 @@ pipeline {
         AGAVE_JSON_PARSER = "jq"
         AGAVE_TENANTID    = "sd2e"
         AGAVE_APISERVER   = "https://api.sd2e.org"
-        AGAVE_USERNAME    = credentials('sd2etest-tacc-username')
+        AGAVE_USERNAME    = "sd2etest"
         AGAVE_PASSWORD    = credentials('sd2etest-tacc-password')
-        REGISTRY_USERNAME = credentials('sd2etest-dockerhub-username')
+        REGISTRY_USERNAME = "sd2etest"
         REGISTRY_PASSWORD = credentials('sd2etest-dockerhub-password')
         REGISTRY_ORG      = credentials('sd2etest-dockerhub-org')
         PATH = "${HOME}/bin:${HOME}/sd2e-cloud-cli/bin:${env.PATH}"
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Build app container') { 
             steps {
-                sh "apps-build-container -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
+                sh "apps-build-container -V -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
             }
         }
         stage('Run functional test(s)') { 
@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Deploy app to TACC.cloud') { 
             steps {
-                sh "apps-deploy -T -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG} fcs-etl-0.3.3 || true"
+                sh "apps-deploy -V -T -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG} fcs-etl-0.3.3 || true"
                 sh "ls -alth"
                 sh "cat deploy-*"
             }
