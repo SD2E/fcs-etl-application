@@ -76,7 +76,7 @@ container_exec() {
         #local OPTS="--network=none --cpus=1.0000 --memory=1G --device-read-iops=/dev/sda:1500 --device-read-iops=/dev/sda:1500"
 
         # Set group ownership on all files making them readable by archive process
-        OPTS="$OPTS --rm  --user=0:${_GID} -v $PWD:/home:rw -w /home"
+        OPTS="$OPTS --rm  --user=0:${_GID} -v $PWD:/data:rw -w /data"
         if [ ! -z "$ENVFILE" ]
         then
             OPTS="$OPTS --env-file ${ENVFILE}"
