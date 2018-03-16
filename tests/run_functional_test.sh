@@ -63,7 +63,7 @@ if ((UNDER_CI)); then
   # the CI user. We resolve this by setting the group, which
   # is the same approach we use in the container runner 
   # that powers container-powered Agave jobs
-  dockeropts=" --user=${CI_UID}:${CI_GID}"
+  dockeropts=" --user=0:${CI_GID}"
 fi
 
 docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} ls /data
@@ -74,6 +74,14 @@ docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data -w /data ${CONTAINER_IMAGE
                          --experimental-data=/data/experimental_data.json \
                          --color-model-parameters=/data/color_model_parameters.json \
                          --analysis-parameters=/data/analysis_parameters.json
+
+# Clean up: Set permissions and ownership on volume mount
+if ((UNDER_CI)); then
+  docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data -w /data ${CONTAINER_IMAGE} find . -type d -exec chmod 0777 {} \;
+  docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data -w /data ${CONTAINER_IMAGE} find . -type f -exec chmod 0666 {} \;
+  docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data -w /data ${CONTAINER_IMAGE} find . -exec chown ${CI_UID}:${CI_GID} {} \;
+fi
+
 # Validate outputs
 # Checking only for existence and non-emptiness here
 # This should be a separate file so we can run it against 
