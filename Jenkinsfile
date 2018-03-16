@@ -72,6 +72,7 @@ pipeline {
     post {
         always {
            sh "delete-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
+           deleteDir()
         }
     }
 }
