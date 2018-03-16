@@ -29,7 +29,8 @@ parser.add_argument('--experimental-data',required = True, help='Configuration s
 parser.add_argument('--color-model-parameters',required=True,help='Configuration specifying how TASBE will build color model')
 parser.add_argument('--analysis-parameters',required=True,help='Analysis file')
 parser.add_argument('--octave-method-path',help='directory for the helper octave functions')
-parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='output/')
+parser.add_argument('--junit-directory', help='Directory for junit xml to be written', default='output/junit')
+
 
 def main(args):
   '''
@@ -101,7 +102,7 @@ def main(args):
   try:
     if not os.path.exists(args.junit_directory):
       os.mkdir(args.junit_directory)
-    octave.eval('TASBESession.to_xml(\'{}/TASBESession.xml\')'.format(args.junit_directory))
+    octave.eval('TASBESession.to_xml(\'{}\')'.format(os.path.join(args.junit_directory, 'TASBESession.xml')))
   except Exception as e:
     logging.error("Error writing JUnit directory {}: {}".format(args.junit_directory, e))
 

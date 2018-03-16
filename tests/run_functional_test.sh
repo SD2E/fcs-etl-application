@@ -12,6 +12,7 @@ set -e
 
 function die(){
     echo "[ERROR]: $1"
+    exit 1
 }
 
 function log(){
@@ -67,13 +68,12 @@ fi
 
 docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} ls /data
 docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
-docker run ${dockeropts} -v ${PWD}/${JOBDIR}:/data -w /data \
-           -e "CYT_CONFIG=/data/cytometer_configuration.json" \
-           -e "PROC_CONTROL=/data/process_control_data.json" \
-           -e "EXP_DATA=/data/experimental_data.json" \
-           -e "COLOR_MODEL_PARAMS=/data/color_model_parameters.json" \
-           -e "ANALYSIS_PARAMS=/data/analysis_parameters.json" ${CONTAINER_IMAGE}
-
+docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data -w /data ${CONTAINER_IMAGE} python /src/fcs.py \
+                         --cytometer-configuration=/data/cytometer_configuration.json \
+                         --process-control=/data/process_control_data.json \
+                         --experimental-data=/data/experimental_data.json \
+                         --color-model-parameters=/data/color_model_parameters.json \
+                         --analysis-parameters=/data/analysis_parameters.json
 # Validate outputs
 # Checking only for existence and non-emptiness here
 # This should be a separate file so we can run it against 
