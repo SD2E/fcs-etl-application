@@ -44,7 +44,7 @@ pipeline {
             steps {
                 sh "ls -alth"
                 sh "files-get -r -S data-sd2e-community /sample/fcs-etl-application/test_data > files-get.log 2>&1"
-                sh "ls -alth"
+                sh "ls -alth test_data"
             }
         }
         stage('Build app container') { 
