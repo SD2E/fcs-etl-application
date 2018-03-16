@@ -17,14 +17,16 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
   aparams = json.load(open(analysis_params, 'rb'))
   channels = aparams['tasbe_analysis_parameters']['channels']
   output_dir = aparams['tasbe_analysis_parameters']['output'].get('output_folder', 'output')
-  label_map = json.load(open(cm_params, 'rb'))['tasbe_color_model_parameters']['channel_parameters']
-  label_map = {matlab_sanitize(x['name']): x['label'] for x in label_map}
+  label_map = (json.load(open(cm_params, 'rb'))['tasbe_color_model_parameters']['channel_parameters'])
+
+  label_map = {matlab_sanitize(x['name']): '{}_MEFL'.format(x['label']) for x in label_map}
+
 
   print label_map
 
   for c in channels:
     if c not in output_cols:
-      output_cols.append(c)
+      output_cols.append('{}_MEFL'.format(c))
 
   big_csv = []
 
@@ -44,12 +46,14 @@ def make_bayesdb_files(exp_data, analysis_params, cm_params):
 
     this_csv = csv.DictReader(open(pointfile, 'rb'))
     for row in this_csv:
-      row = {label_map[x]: row[x] for x in row}
       row.update(conditions)
       row.update({'file_id':file_id})
       big_csv.append(row)
 
   with open(os.path.join(output_dir, 'bayesdb_data.csv'), 'wb') as bayesdb_datafile:
+
+    print input_cols + output_cols
+
     writer = csv.DictWriter(bayesdb_datafile, fieldnames=input_cols + output_cols)
     writer.writeheader()
     for row in big_csv:

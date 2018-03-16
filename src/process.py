@@ -7,6 +7,7 @@ class ProcessControl:
       self.obj = json.load(f)['tasbe_process_control_data']
 
     self.octave = octave
+    self.octave.eval('TASBEConfig.load_from_json(\'{}\')'.format(json.dumps(self.obj.get('TASBEConfig', {}))))
 
   def get_blank_filename(self):
     return self.obj['blank_file']
@@ -14,8 +15,6 @@ class ProcessControl:
 
   def get_bead_info(self):
     b = {}
-    b['batch'] = self.obj['bead_batch']
-    b['model'] = self.obj['bead_model']
     b['file']  = self.obj['bead_file']
     return b
 

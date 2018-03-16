@@ -11,7 +11,7 @@ class ColorModel:
       self.obj = json.load(f)['tasbe_color_model_parameters']
     with open(analysis_param_filename) as f:
       self.analysis_params = json.load(f)['tasbe_analysis_parameters']
-    self.octave.eval('settings = TASBESettings();')
+    self.octave.eval('TASBEConfig.load_from_json(\'{}\')'.format(json.dumps(self.obj.get('TASBEConfig', {}))))
 
     self.parse_channels()
 
@@ -50,27 +50,34 @@ class ColorModel:
     self.process_control.get_color_files()
     self.process_control.get_color_pair_files()
 
-    self.octave.eval('TASBEConfig.set(\'heatmapPlotType\',\'contour\')')
-    self.octave.eval('TASBEConfig.set(\'outputDirectory\',\'{}\')'.format(self.analysis_params.get('output', {}).get('output_folder', 'output')))
+#     self.octave.eval('TASBEConfig.set(\'heatmapPlotType\',\'contour\')')
+#     self.octave.eval('TASBEConfig.set(\'outputDirectory\',\'{}\')'.format(self.analysis_params.get('output', {}).get('output_folder', 'output')))
     print 'bead {} \n blank {}'.format(bead_info['file'],blank)
     self.octave.eval('cm = ColorModel(\'{}\',\'{}\', side_channels, color_channel_files, colorpairfiles);'.format(bead_info['file'],blank))
     self.octave.eval('cm = set_translation_plot(cm,true);')
     self.octave.eval('cm = set_noise_plot(cm,false);')
-    self.octave.eval('cm = set_bead_model(cm,\'{}\');'.format(bead_info['model']))
+
+#     self.octave.eval('TASBEConfig.set(\'beads.beadModel\',\'{}\')'.format(bead_info['model']))
+
     #TODO ADD in channel min
     self.octave.eval('cm = set_translation_channel_min(cm,[2,2,2]);')
-    self.octave.eval('cm = set_bead_batch(cm,\'{}\');'.format(bead_info['batch']))
+
+#     self.octave.eval('TASBEConfig.set(\'beads.beadBatch\',\'{}\')'.format(bead_info['batch']))
+
+
     self.octave.eval('cm = set_ERF_channel_name(cm,\'{}\');'.format(self.obj['ERF_channel_name']))
-    #self.octave.eval('settings = setSetting(settings,\'channel_template_file\',\'{}\');'.format(blank))
+
     if not bead_info['file']:
-			self.octave.eval('settings = setSetting(settings,\'override_units\',1)')
+        self.octave.eval('TASBEConfig.set(\'calibration.overrideUnits\',1)')
+
+    #self.octave.eval('settings = setSetting(settings,\'channel_template_file\',\'{}\');'.format(blank))
     #self.octave.eval('settings = setSetting(settings,\'override_autofluorescence\', 0)')
 
-    self.octave.eval('settings = setSetting(settings, \'channel_template_file\', \'{}\');'.format(self.template_file))
+    self.octave.eval('TASBEConfig.set(\'channel_template_file\', \'{}\');'.format(self.template_file))
     #TODO add min
-    self.octave.eval('settings = setSetting(settings,\'path\',\'{}\');'.format('plots'))  
+#     self.octave.eval('TASBEConfig.set(\'plots.plotPath\',\'{}\');'.format('plots'))
     
     self.octave.eval('cm = add_filter(cm,gating);') 
     self.octave.eval('pkg load io;')
-    self.octave.eval('cm=resolve(cm, settings);')
+    self.octave.eval('cm=resolve(cm);')
     

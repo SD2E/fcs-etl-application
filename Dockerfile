@@ -5,7 +5,7 @@ FROM sd2e/base:ubuntu16
 ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
 
 ARG TASBE_REPO=https://github.com/TASBE/TASBEFlowAnalytics.git
-ARG TASBE_TAG=4.0.0
+ARG TASBE_TAG=5.1.0
 ARG TASBE_BRANCH=master
 
 RUN apt-get update
