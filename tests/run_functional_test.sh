@@ -83,7 +83,7 @@ CSVS=$(cd ${JOBDIR} && ls output/*.csv )
 log "Output CSV files:"
 log "${CSVS}"
 
-for FILE_TO_TEST in junit/TASBESession.xml ${CSVS}
+for FILE_TO_TEST in output/junit/TASBESession.xml ${CSVS}
 do
     file_exists_not_empty ${JOBDIR}/${FILE_TO_TEST}
 done
