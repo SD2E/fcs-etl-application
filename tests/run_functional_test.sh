@@ -63,7 +63,7 @@ if ((UNDER_CI)); then
   # the CI user. We resolve this by setting the group, which
   # is the same approach we use in the container runner 
   # that powers container-powered Agave jobs
-  dockeropts=" --user=0:${CI_GID}"
+  dockeropts=" --user=${CI_UID}:${CI_GID}"
 fi
 
 docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} ls /data
