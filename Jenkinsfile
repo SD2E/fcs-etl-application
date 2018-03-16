@@ -3,6 +3,8 @@
 pipeline {
     agent any
     environment {
+        AGAVE_JOB_TIMEOUT = 1800
+        AGAVE_JOB_GET_DIR = "job_output"
         AGAVE_DATA_URI    = "agave://data-sd2e-community/sample/fcs-etl-application/test_data"
         CONTAINER_REPO    = "fcs-etl"
         CONTAINER_TAG     = "test"
@@ -19,12 +21,12 @@ pipeline {
         }
     stages {
 
-        stage('Create an ephemeral session and Oauth client') { 
+        stage('Create Oauth client') { 
             steps {
                 sh "make-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
             }
         }
-        stage('Conditionally, copy in test data') {
+        stage('(Copy in test data)') {
             when { not {
                     expression { fileExists('test_data') }
                    }
@@ -37,25 +39,23 @@ pipeline {
         }
         stage('Build app container') { 
             steps {
-                sh "apps-build-container -V -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
+                sh "apps-build-container -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG}"
             }
         }
         stage('Run functional test(s)') { 
             steps {
-                sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} test_data || true"
+                sh "tests/run_functional_test.sh ${REGISTRY_USERNAME}/${CONTAINER_REPO}:${CONTAINER_TAG} test_data"
             }
         }
-        stage('Deploy app to TACC.cloud') { 
+        stage('Deploy to TACC.cloud') { 
             steps {
-                sh "apps-deploy -V -T -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG} fcs-etl-0.3.3 || true"
-                sh "ls -alth"
+                sh "apps-deploy -T -O ${REGISTRY_USERNAME} --image ${CONTAINER_REPO} --tag ${CONTAINER_TAG} fcs-etl-0.3.3"
                 sh "cat deploy-*"
             }
         }
-        stage('Run a test job against deployed app') { 
+        stage('Run a test job') { 
             steps {
-                sh "tests/run_agave_job_test.sh deploy-${AGAVE_USERNAME}-job.json || true"
-                sh "cat deploy-*"
+                sh "tests/run_test_job.sh deploy-${AGAVE_USERNAME}-job.json ${AGAVE_JOB_TIMEOUT}"
             }
         }
     }
