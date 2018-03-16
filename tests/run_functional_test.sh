@@ -5,8 +5,8 @@ JOBDIR=$2
 
 UNDER_CI=0
 CI_PLATFORM=
-CI_UID=$(id -u $USER)
-CI_GID=$(id -g $USER)
+CI_UID=$(id -u ${USER})
+CI_GID=$(id -g ${USER})
 
 set -e
 
@@ -33,16 +33,16 @@ function file_exists_not_empty(){
 function detect_ci() {
 
   ## detect whether we're running under continous integration
-  if [ ! -z "$TRAVIS" ]; then
-    if [ "$TRAVIS" == "true" ]; then
+  if [ ! -z "${TRAVIS}" ]; then
+    if [ "${TRAVIS}" == "true" ]; then
       UNDER_CI=1
-      CI_PLATFORM="TRAVIS"
+      CI_PLATFORM="Travis"
     fi
   fi
 
-  if [ ! -z "$JENKINS_URL" ]; then
+  if [ ! -z "${JENKINS_URL}" ]; then
     UNDER_CI=1
-    CI_PLATFORM="JENKINS"
+    CI_PLATFORM="Jenkins"
   fi
 
   if ((UNDER_CI)); then
@@ -51,8 +51,10 @@ function detect_ci() {
 
 }
 
-# Tweak config for Docker depending on if we're running under CI
+# Are we running under CI
 detect_ci
+
+# Tweak config for Docker depending on if we're running under CI
 dockeropts=
 if ((UNDER_CI)); then
   # If running a Dockerized process with a volume mount
@@ -63,29 +65,27 @@ if ((UNDER_CI)); then
   dockeropts=" --user=0:${CI_GID}"
 fi
 
-set -x
-
-docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} ls /data
-docker run $dockeropts -t -v $PWD/$JOBDIR:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
-docker run $dockeropts -v $PWD/$JOBDIR:/data -w /data \
+docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} ls /data
+docker run ${dockeropts} -t -v ${PWD}/${JOBDIR}:/data ${CONTAINER_IMAGE} python /src/test_scratch.py
+docker run ${dockeropts} -v ${PWD}/${JOBDIR}:/data -w /data \
            -e "CYT_CONFIG=/data/cytometer_configuration.json" \
            -e "PROC_CONTROL=/data/process_control_data.json" \
            -e "EXP_DATA=/data/experimental_data.json" \
            -e "COLOR_MODEL_PARAMS=/data/color_model_parameters.json" \
            -e "ANALYSIS_PARAMS=/data/analysis_parameters.json" ${CONTAINER_IMAGE}
 
-set +x
-
 # Validate outputs
 # Checking only for existence and non-emptiness here
+# This should be a separate file so we can run it against 
+# downloaded results from the Agave job
 log "Verifying results..."
-CSVS=$(cd $JOBDIR && ls output/*.csv )
+CSVS=$(cd ${JOBDIR} && ls output/*.csv )
 log "Output CSV files:"
-log "$CSVS"
+log "${CSVS}"
 
-for FILE_TO_TEST in junit/TASBESession.xml $CSVS
+for FILE_TO_TEST in junit/TASBESession.xml ${CSVS}
 do
-    file_exists_not_empty $JOBDIR/$FILE_TO_TEST
+    file_exists_not_empty ${JOBDIR}/${FILE_TO_TEST}
 done
 
 set +e

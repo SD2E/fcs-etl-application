@@ -52,6 +52,12 @@ pipeline {
                 sh "cat deploy-*"
             }
         }
+        stage('Run a test job against deployed app') { 
+            steps {
+                sh "tests/run_agave_job_test.sh deploy-${AGAVE_USERNAME}-job.json || true"
+                sh "cat deploy-*"
+            }
+        }
     }
     post {
         always {
