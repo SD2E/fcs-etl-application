@@ -32,7 +32,8 @@ pipeline {
                 environment name: 'AGAVE_GET_DATA', value: '1' 
             }
             steps {
-                sh "rm -rf test_data" || true
+                echo "Removing test_data"
+                sh "rm -rf test_data || true "
             }
         }
         stage('(Copy in test data)') {
