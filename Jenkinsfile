@@ -1,5 +1,7 @@
 #!groovy
 
+def JOB_ID = ''
+
 pipeline {
     agent any
     environment {
@@ -42,7 +44,6 @@ pipeline {
                    }
             }
             steps {
-                sh "ls -alth"
                 sh "files-get -r -S data-sd2e-community /sample/fcs-etl-application/test_data > files-get.log 2>&1"
                 sh "ls -alth test_data"
             }
@@ -65,14 +66,20 @@ pipeline {
         }
         stage('Run a test job') { 
             steps {
-                sh "tests/run_test_job.sh deploy-${AGAVE_USERNAME}-job.json ${AGAVE_JOB_TIMEOUT}"
+                // Run job
+                sh "run-test-job deploy-${AGAVE_USERNAME}-job.json ${AGAVE_JOB_TIMEOUT}"
+                // Get outputs
+                sh "get-test-job-outputs deploy-${AGAVE_USERNAME}-job.json.jobid"
+                // Evaluate results
             }
         }
     }
     post {
         always {
-           sh "delete-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
-           deleteDir()
+            sh "delete-session-client ${JOB_BASE_NAME} ${JOB_BASE_NAME}-${BUILD_ID}"
+        }
+        success {
+            deleteDir()
         }
     }
 }
