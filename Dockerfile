@@ -2,15 +2,16 @@
 # and env variables that help with downstream usage by apps and reactors
 FROM sd2e/base:ubuntu16
 
-ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
+# ARG OCTAVE_VERSION=4.2.1-2~octave~xenial1
+ARG OCTAVE_VERSION=4.2.2-1~octave~xenial2
 
 ARG TASBE_REPO=https://github.com/TASBE/TASBEFlowAnalytics.git
 ARG TASBE_TAG=5.1.0
 ARG TASBE_BRANCH=master
 
 RUN apt-get update
-RUN apt-get install software-properties-common python-software-properties -y
-RUN add-apt-repository ppa:octave/stable
+RUN apt-get install -y software-properties-common python-software-properties -y
+RUN add-apt-repository -y ppa:octave/stable
 
 RUN apt-get update && \
 		apt-get install -y \
@@ -46,7 +47,7 @@ RUN apt-get install git -y
 RUN apt-get install python -y
 RUN apt-get install python-pip -y
 RUN pip install --upgrade pip
-RUN pip install oct2py 
+RUN pip install oct2py
 RUN pip install --upgrade --force-reinstall octave_kernel
 RUN pip install jupyter
 RUN pip install SPARQLWrapper
