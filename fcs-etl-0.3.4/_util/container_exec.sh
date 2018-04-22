@@ -1,8 +1,11 @@
+#!/usr/bin/env bash
+
+# Fetch the container runtime script on the fly, allowing us to update for
+# apps as we improve it
+curl -skL -O https://raw.githubusercontent.com/sd2e/sd2e-cli/master/install/runtime.sh
+
 
 container_exec() {
-
-
-
 
     # [TODO] Check for existence of docker or singularity executable
     # [TODO] Enable honoring a DEBUG global
