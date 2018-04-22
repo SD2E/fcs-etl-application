@@ -2,8 +2,7 @@
 
 # Fetch the container runtime script on the fly, allowing us to update for
 # apps as we improve it
-curl -skL -O https://raw.githubusercontent.com/sd2e/sd2e-cli/master/install/runtime.sh
-
+# curl -skL -O https://raw.githubusercontent.com/sd2e/sd2e-cli/master/install/runtime.sh
 
 container_exec() {
 
@@ -89,7 +88,7 @@ container_exec() {
             set -x
         fi
         echo ${PARAMS}
-        docker pull ${CONTAINER_IMAGE}
+        docker pull ${CONTAINER_IMAGE} >/dev/null 2>&1 || true
         docker run $OPTS ${CONTAINER_IMAGE} ${COMMAND} ${PARAMS} &&
         docker run $OPTS bash chmod -R g+rw .
         if [ ! -z "$DEBUG" ];
