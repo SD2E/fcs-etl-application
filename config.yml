@@ -2,3 +2,7 @@
 sparql:
   host: 'http://hub-api.sd2e.org/sparql'
   uri: 'http://hub-api.sd2e.org/sparql/user/nroehner/rule30_conditions/pAN3928_pAN4036_system_5_0_0/1.0.0'
+log:
+  levels: DEBUG
+  file: ~
+  token: ~
