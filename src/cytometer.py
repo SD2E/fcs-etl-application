@@ -11,7 +11,7 @@ class Cytometer:
     self.make_channels()
 
   def make_channels(self):
-    channels = self.obj['channels']
+    channels = [x for x in self.obj['channels'] if x['emission_filter']['type'] == 'bandpass'] # Don't know how TASBE handles longpass
     self.channels = []
     self.octave.eval('channels = {}')
     
