@@ -33,6 +33,13 @@ else
 fi
 echo "WD => $WD"
 
+# # Because we're running pytest in a temp directory, copy setup.cfg there
+# # to parameterize it. Otherwise, we get stock pytest behavior which is
+# # not very useful
+# if [ -f "setup.cfg" ]; then
+#     cp setup.cfg $WD/
+# fi
+
 OWD=$PWD
 cd $WD
 container_exec ${CONTAINER_IMAGE} ${COMMANDS}

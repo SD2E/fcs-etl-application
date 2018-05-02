@@ -5,11 +5,12 @@ FROM sd2e/tasbe-base:dev
 # the requirements from sd2e/base-images/languages/python2
 # https://github.com/SD2E/base-images/blob/master/languages/python2/requirements-edge.txt
 ADD requirements-testing.txt /tmp/requirements.txt
-RUN pip install --upgrade --no-cache -r /tmp/requirements.txt
+RUN pip install --upgrade -r /tmp/requirements.txt
 
 # Local source code rather than Github
 # Put this last so we can develop locally without cache-busting
 ADD src /src
+ADD setup.cfg /src/setup.cfg
 
 ADD config.yml /config.yml
 

@@ -1,9 +1,9 @@
 .PHONY: tests container tests-local tests-reactor tests-deployed data-representation
 .SILENT: tests container tests-local tests-reactor tests-deployed data-representation
 
-PYTESTDIR := src
+PYTESTDIR := /src
 INIFILE := app.ini
-export AGAVE_JOB_DIR := $(PWD)
+# export AGAVE_JOB_DIR := $(PWD)
 
 # all: clean app deploy postdeploy
 # 	true
@@ -20,7 +20,7 @@ clean-base-containers:
 
 # remove the agave app container
 clean-app-container:
-	bash tests/remove_images.sh $(INIFILE)
+	bash scripts/remove_images.sh $(INIFILE)
 
 # meta - allow all containers to be rebuilt
 clean-containers: clean-base-containers clean-app-container
@@ -46,22 +46,25 @@ container: .tasbe-base
 
 # shell into the target container (assuming it's been built)
 shell:
-	bash tests/run_container_tests.sh bash
+	bash scripts/run_container_tests.sh bash
 
+# ((((Pytest-ception)))) run pytest inside your container on the /src
+# directory. Configuration comes from setup.cfg which is copied into src
+# in the Dockerfile
 tests-pytest:
-	bash tests/run_container_tests.sh pytest $(PYTESTDIR) -s -vvv $(PYTESTOPTS)
+	bash scripts/run_container_tests.sh pytest $(PYTESTDIR) -s -vvv $(PYTESTOPTS)
 
 # tests-app:
-#  	bash tests/run_local_message.sh
+#  	bash scripts/run_local_message.sh
 
 # tests-deployed:
-#  	bash tests/run_deployed_message.sh
+#  	bash scripts/run_deployed_message.sh
 
 # tests: tests-pytest tests-app
 #  	true
 
-# deploy:
-# 	apps-deploy --backup
+deploy:
+	apps-deploy --backup
 
 # # postdeploy:
-# # 	bash tests/run_after_deploy.sh
+# # 	bash scripts/run_after_deploy.sh
