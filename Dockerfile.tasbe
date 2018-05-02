@@ -1,0 +1,23 @@
+# Intermediate image with octave and a load of support libraries baked in
+FROM sd2e/octave-base:dev
+
+ARG TASBE_REPO=https://github.com/SD2E/TASBEFlowAnalytics.git
+ARG TASBE_BRANCH=master
+ARG TASBE_TAG=5.1.0
+# A fix or feature branch off of a TASBE release tag
+ARG TASBE_PATCH_BRANCH=split-lots-in-catalog
+
+# RUN cd / && \
+#     git clone  -b $TASBE_BRANCH $TASBE_REPO && \
+#     cd /TASBEFlowAnalytics && \
+#     git checkout tags/$TASBE_TAG &&\
+#     make install && \
+#     octave --eval 'pkg install -forge io'
+
+RUN cd / && \
+    git clone  -b $TASBE_BRANCH $TASBE_REPO && \
+    cd /TASBEFlowAnalytics && \
+    git checkout $TASBE_PATCH_BRANCH &&\
+    make install && \
+    octave --eval 'pkg install -forge io'
+

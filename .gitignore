@@ -1,3 +1,13 @@
-*.pyc
+# container artifacts
+.tasbe-base
+.octave-base
+# temporary testing directories
+tmp.*
 
+# python and pytest artifacts
+*.pyc
+.coverage
+.pytest_cache/
+
+# apps workflow artifacts
 deploy-*
