@@ -3,6 +3,10 @@
 .octave-base
 # temporary testing directories
 tmp.*
+test-data/
+
+# job data cache
+.jobcache
 
 # python and pytest artifacts
 *.pyc

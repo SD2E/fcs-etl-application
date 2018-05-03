@@ -1,4 +1,7 @@
 INIFILE="app.ini"
+APP_NAME=
+APP_VERSION=
+APP_ID=
 DOCKER_HUB_ORG=
 DOCKER_IMAGE_TAG=
 DOCKER_IMAGE_VERSION=
@@ -55,9 +58,13 @@ function read_app_ini() {
       die "Unable to find or access $INIFILE"
     fi
 
-    export DOCKER_HUB_ORG=$(grep "username" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
-    export DOCKER_IMAGE_TAG=$(grep "repo" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
-    export DOCKER_IMAGE_VERSION=$(grep "tag" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    # Very bad INI reader
+    export DOCKER_HUB_ORG=$(egrep "^username" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    export DOCKER_IMAGE_TAG=$(egrep "^repo" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    export DOCKER_IMAGE_VERSION=$(egrep "^tag" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    export APP_NAME=$(egrep "^name" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    export APP_VERSION=$(egrep "^version" $INIFILE | awk -F '=' '{ print $2 }' | tr -d " ")
+    export APP_ID="${APP_NAME}-${APP_VERSION}"
 
     CONTAINER_IMAGE="${DOCKER_IMAGE_TAG}"
     if [ ! -z "${DOCKER_HUB_ORG}" ]; then
@@ -68,6 +75,8 @@ function read_app_ini() {
     fi
     export CONTAINER_IMAGE
 
-    echo "$INIFILE => $CONTAINER_IMAGE"
+    echo "ini: $INIFILE"
+    echo "container: $CONTAINER_IMAGE"
+    echo "appId: $APP_ID"
 
 }

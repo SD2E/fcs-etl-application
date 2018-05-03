@@ -1,0 +1,81 @@
+{
+  "id": "4108367527069216280-242ac11b-0001-007",
+  "name": "2ed766bf9ccd145977c-a9419c87cbbeef2be9c75",
+  "owner": "sd2eadm",
+  "appId": "sd2eadm-fcs-etl-0.3.5",
+  "executionSystem": "hpc-tacc-jetstream",
+  "batchQueue": "normal",
+  "nodeCount": 1,
+  "processorsPerNode": 1,
+  "memoryPerNode": 1,
+  "maxRunTime": "00:55:00",
+  "archive": true,
+  "retries": 0,
+  "localId": "1177",
+  "created": "2018-05-02T15:52:55.000-05:00",
+  "lastUpdated": "2018-05-02T15:59:46.000-05:00",
+  "archivePath": "/ingest/biofab/yeast-gates_q0/aq_10545/3/processed/sd2eadm-fcs-etl-0.3.5/2ed766bf9ccd145977c-a9419c87cbbeef2be9c75",
+  "archiveSystem": "data-sd2e-community",
+  "outputPath": "sd2eadm/job-4108367527069216280-242ac11b-0001-007-2ed766bf9ccd145977c-a9419c87cbbeef2be9c75",
+  "status": "FINISHED",
+  "submitTime": "2018-05-02T15:58:13.000-05:00",
+  "startTime": "2018-05-02T15:58:15.000-05:00",
+  "endTime": "2018-05-02T15:59:46.000-05:00",
+  "inputs": {
+    "cytometerConfiguration": [
+      "agave://data-sd2e-community/temp/flow_etl/launch_fcs_etl_app/biofab_yeast_gates_q0_aq_10545/1/cytometer_configuration.json"
+    ],
+    "processControl": [
+      "agave://data-sd2e-community/temp/flow_etl/launch_fcs_etl_app/biofab_yeast_gates_q0_aq_10545/1/process_control_data.json"
+    ],
+    "experimentalData": [
+      "agave://data-sd2e-community/temp/flow_etl/launch_fcs_etl_app/biofab_yeast_gates_q0_aq_10545/1/experimental_data.json"
+    ],
+    "colorModelParameters": [
+      "agave://data-sd2e-community/temp/flow_etl/launch_fcs_etl_app/biofab_yeast_gates_q0_aq_10545/1/color_model_parameters.json"
+    ],
+    "analysisParameters": [
+      "agave://data-sd2e-community/temp/flow_etl/launch_fcs_etl_app/biofab_yeast_gates_q0_aq_10545/1/analysis_parameters.json"
+    ],
+    "inputData": [
+      "agave://data-sd2e-community/ingest/biofab/yeast-gates_q0/aq_10545/3/instrument_output"
+    ]
+  },
+  "parameters": {
+    "CONTAINER_IMAGE": [
+      "sd2e/fcs-etl:0.3.5"
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://api.sd2e.org/jobs/v2/4108367527069216280-242ac11b-0001-007"
+    },
+    "app": {
+      "href": "https://api.sd2e.org/apps/v2/sd2eadm-fcs-etl-0.3.5"
+    },
+    "executionSystem": {
+      "href": "https://api.sd2e.org/systems/v2/hpc-tacc-jetstream"
+    },
+    "archiveSystem": {
+      "href": "https://api.sd2e.org/systems/v2/data-sd2e-community"
+    },
+    "archiveData": {
+      "href": "https://api.sd2e.org/files/v2/listings/system/data-sd2e-community//ingest/biofab/yeast-gates_q0/aq_10545/3/processed/sd2eadm-fcs-etl-0.3.5/2ed766bf9ccd145977c-a9419c87cbbeef2be9c75"
+    },
+    "owner": {
+      "href": "https://api.sd2e.org/profiles/v2/sd2eadm"
+    },
+    "permissions": {
+      "href": "https://api.sd2e.org/jobs/v2/4108367527069216280-242ac11b-0001-007/pems"
+    },
+    "history": {
+      "href": "https://api.sd2e.org/jobs/v2/4108367527069216280-242ac11b-0001-007/history"
+    },
+    "metadata": {
+      "href": "https://api.sd2e.org/meta/v2/data/?q=%7B%22associationIds%22%3A%224108367527069216280-242ac11b-0001-007%22%7D"
+    },
+    "notifications": {
+      "href": "https://api.sd2e.org/notifications/v2/?associatedUuid=4108367527069216280-242ac11b-0001-007"
+    }
+  }
+}

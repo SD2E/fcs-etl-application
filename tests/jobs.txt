@@ -1,0 +1,2 @@
+#uri
+agave://data-sd2e-community/sample/fcs-etl-application/sd2eadm-fcs-etl-0.3.5/
